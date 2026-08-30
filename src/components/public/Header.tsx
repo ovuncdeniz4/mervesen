@@ -11,8 +11,6 @@ const nav = [
 ];
 
 export function Header({ clinic }: { clinic: ClinicSettings }) {
-  const instagram = clinic.instagramUrl;
-
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-espresso/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -37,11 +35,6 @@ export function Header({ clinic }: { clinic: ClinicSettings }) {
             {item.label}
           </Link>
         ))}
-        {instagram ? (
-          <a href={instagram} target="_blank" rel="noreferrer" className="hover:text-ivory">
-            Instagram
-          </a>
-        ) : null}
       </nav>
     </header>
   );
