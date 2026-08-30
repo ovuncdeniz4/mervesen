@@ -50,13 +50,16 @@ export const doctorBio = aboutPage.sections
 
 export const clinicGallery = [
   { src: "/images/clinic/reception.jpg", alt: "Klinik karşılama alanı, Merve Şen Aşkar tabelası" },
-  { src: "/images/clinic/treatment-room.jpg", alt: "Tedavi odası ve diş üniti" },
+  { src: "/images/clinic/treatment-room.jpg", alt: "Tedavi odası, neon diş panosu ve ünit" },
+  { src: "/images/clinic/xray-room.jpg", alt: "Tedavi odası ve panoramik röntgen ekranı" },
   { src: "/images/clinic/waiting.jpg", alt: "Bekleme alanı" },
   { src: "/images/clinic/exterior.jpg", alt: "Muayenehane dış görünümü, Bayraklı" },
 ];
 
 export const doctorPortraits = [
-  { src: "/images/doctor/portrait-2.jpg", alt: "Dt. Merve Şen Aşkar klinik ortamında" },
+  { src: "/images/doctor/portrait-2.jpg", alt: "Dt. Merve Şen Aşkar, beyaz önlükle klinikte" },
+  { src: "/images/doctor/portrait-3.jpg", alt: "Dt. Merve Şen Aşkar" },
+  { src: "/images/doctor/portrait-4.jpg", alt: "Dt. Merve Şen Aşkar klinik ortamında" },
 ];
 
 export const INSTAGRAM_HANDLE = "dtmervesen";
