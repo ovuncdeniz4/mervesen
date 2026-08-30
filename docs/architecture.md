@@ -82,7 +82,7 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Medya ve sosyal
 
-- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor`
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: `doctor/hero.jpg`)
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
 - Google yorumları: sitede 5.0 / 42 özeti ve Maps’ten alınan özgün yorumlar; tam liste Google Haritalar’da

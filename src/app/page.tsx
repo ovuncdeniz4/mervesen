@@ -16,7 +16,8 @@ export default async function HomePage() {
     getWorkingHours(),
   ]);
   const featured = services.filter((item) => item.featured).slice(0, 6);
-  const heroPortrait = publicImageExists("/images/doctor/portrait-1.jpg");
+  const heroSrc = "/images/doctor/hero.jpg";
+  const heroPortrait = publicImageExists(heroSrc);
 
   return (
     <PublicShell clinic={clinic}>
@@ -38,14 +39,14 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-[2rem] bg-sage-dark shadow-xl">
+          <div className="relative overflow-hidden rounded-[2rem] bg-black shadow-xl">
             {heroPortrait ? (
-              <div className="relative aspect-[4/5] min-h-[22rem]">
+              <div className="relative aspect-[3/4] min-h-[22rem]">
                 <Image
-                  src="/images/doctor/portrait-1.jpg"
-                  alt={clinic.doctorName}
+                  src={heroSrc}
+                  alt={`${clinic.doctorName}, dental lup ile tedavi sırasında`}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   priority
                 />
@@ -57,9 +58,9 @@ export default async function HomePage() {
               </div>
             )}
             {heroPortrait ? (
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-sage-dark/90 to-transparent p-6 text-white">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-6 text-white">
                 <p className="font-serif text-3xl">{clinic.doctorName}</p>
-                <p className="mt-2 text-sm leading-relaxed text-sage-light/90">{clinic.aboutShort}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/80">{clinic.aboutShort}</p>
               </div>
             ) : null}
           </div>
