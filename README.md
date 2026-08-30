@@ -37,6 +37,16 @@ Telefon: `0554 993 01 23` · WhatsApp aynı numara · Instagram: [@dtmervesen](h
 4. Deploy. Build `prisma db push` ve seed çalıştırır (hizmetler + ilk admin; klinik saatlerini ve ayarları tekrar ezmez).
 5. **Settings → Domains** ile kendi alan adınızı ekleyin.
 
+### Randevu e-posta bildirimi (ücretsiz)
+
+SMS ücretlidir; bildirim e-posta ile gider. [Resend](https://resend.com) ücretsiz kotası (ayda birkaç bin mail) yeterli.
+
+1. resend.com’da ücretsiz hesap açın, **API Keys** → bir anahtar kopyalayın.
+2. Vercel → **Settings → Environment Variables**:
+   - `RESEND_API_KEY` — o anahtar
+   - `NOTIFY_EMAIL` — randevu mailinin düşeceği sizin adresiniz (Resend hesabınızla aynı e-posta olmalı; kendi alan adınızı doğrulayana kadar)
+3. Redeploy. Yeni randevu ve iletişim formu mesajı bu kutuya gelir.
+
 Admin: `https://your-domain.com/admin/login`
 
 Mimari: [docs/architecture.md](docs/architecture.md)

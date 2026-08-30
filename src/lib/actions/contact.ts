@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { notifyNewContactMessage } from "@/lib/notify";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Ad soyad gerekli.").max(80),
@@ -37,5 +38,11 @@ export async function sendContactMessage(_prev: ContactState | null, formData: F
 
   revalidatePath("/admin");
   revalidatePath("/admin/mesajlar");
+  await notifyNewContactMessage({
+    name: parsed.data.name,
+    phone: parsed.data.phone,
+    email: parsed.data.email,
+    message: parsed.data.message,
+  });
   return { ok: true };
 }
