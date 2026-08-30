@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ClinicSettings } from "@prisma/client";
+import { BrandLink } from "@/components/public/BrandLink";
 
 const nav = [
   { href: "/hakkimizda", label: "Hakkımızda" },
@@ -15,14 +16,7 @@ export function Header({ clinic }: { clinic: ClinicSettings }) {
   return (
     <header className="sticky top-0 z-40 border-b border-cream-dark/80 bg-cream/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="min-w-0">
-          <span className="font-serif text-xl leading-none text-sage-dark sm:text-2xl">
-            {clinic.doctorName}
-          </span>
-          <span className="mt-0.5 block text-[11px] uppercase tracking-[0.18em] text-ink-soft">
-            Diş hekimi · Bayraklı
-          </span>
-        </Link>
+        <BrandLink clinic={clinic} />
         <nav className="hidden items-center gap-6 text-sm text-ink-soft lg:flex">
           {nav.map((item) => (
             <Link key={item.href} href={item.href} className="hover:text-sage-dark">

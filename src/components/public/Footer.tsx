@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ClinicSettings } from "@prisma/client";
 import { telLink, whatsappLink } from "@/lib/clinic";
+import { BrandLink } from "@/components/public/BrandLink";
 
 export function Footer({ clinic }: { clinic: ClinicSettings }) {
   const tel = telLink(clinic.phone);
@@ -9,7 +10,7 @@ export function Footer({ clinic }: { clinic: ClinicSettings }) {
     <footer className="mt-auto border-t border-cream-dark bg-sage-dark text-sage-light">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3 sm:px-6">
         <div>
-          <p className="font-serif text-2xl text-white">{clinic.clinicName}</p>
+          <BrandLink clinic={clinic} variant="footer" />
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-sage-light/80">{clinic.tagline}</p>
         </div>
         <div className="text-sm leading-relaxed">
