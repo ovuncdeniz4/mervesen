@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { sendContactMessage, type ContactState } from "@/lib/actions/contact";
+import { TR_MOBILE_HINT, TR_MOBILE_PLACEHOLDER } from "@/lib/phone";
 
 export function ContactForm() {
   const [state, action, pending] = useActionState(sendContactMessage, null as ContactState | null);
@@ -24,7 +25,17 @@ export function ContactForm() {
       </label>
       <label className="block text-sm">
         Telefon
-        <input required name="phone" inputMode="tel" className="mt-1 w-full rounded-md border border-champagne bg-paper px-3 py-2" />
+        <input
+          required
+          name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          placeholder={TR_MOBILE_PLACEHOLDER}
+          maxLength={18}
+          className="mt-1 w-full rounded-md border border-champagne bg-paper px-3 py-2"
+        />
+        <span className="mt-1 block text-xs text-muted">{TR_MOBILE_HINT}</span>
       </label>
       <label className="block text-sm">
         E-posta (isteğe bağlı)

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { bookAppointment, getDaySlots, getMonthAvailability, type BookingState } from "@/lib/actions/booking";
 import { formatDateLong, monthGrid, splitYmd, todayYmd } from "@/lib/dates";
 import type { SlotDto } from "@/lib/availability";
+import { TR_MOBILE_HINT, TR_MOBILE_PLACEHOLDER } from "@/lib/phone";
 
 const WEEKDAYS = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
 
@@ -110,12 +111,16 @@ export function BookingWizard() {
             <input
               required
               name="phone"
+              type="tel"
               inputMode="tel"
               autoComplete="tel"
+              placeholder={TR_MOBILE_PLACEHOLDER}
+              maxLength={18}
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
             />
+            <span className="mt-1 block text-xs text-muted">{TR_MOBILE_HINT}</span>
           </label>
           <label className="block text-sm">
             E-posta (isteğe bağlı)

@@ -2,12 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/require-admin";
 import { formatTimeIstanbul, todayYmd, weekdayLabel, weekdayFromYmd } from "@/lib/dates";
-import {
-  createBlockedSlotForm,
-  createManualAppointmentForm,
-  deleteBlockedSlot,
-  updateAppointmentStatus,
-} from "@/lib/actions/admin";
+import { createBlockedSlotForm, deleteBlockedSlot, updateAppointmentStatus } from "@/lib/actions/admin";
+import { ManualAppointmentForm } from "@/components/admin/ManualAppointmentForm";
 
 export default async function AdminCalendarPage({
   searchParams,
@@ -113,21 +109,14 @@ export default async function AdminCalendarPage({
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
           <h2 className="font-serif text-xl">Manuel randevu</h2>
-          <form action={createManualAppointmentForm} className="mt-3 grid gap-3">
-            <input type="hidden" name="ymd" value={ymd} />
-            <select name="serviceId" className="rounded-xl border border-cream-dark bg-cream px-3 py-2" required>
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.name} ({service.durationMin} dk)
-                </option>
-              ))}
-            </select>
-            <input type="time" name="time" required className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <input name="patientName" placeholder="Ad soyad" required className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <input name="phone" placeholder="Telefon" required className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <input name="notes" placeholder="Not" className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <button className="rounded-full bg-sage py-2 text-white">Ekle</button>
-          </form>
+          <ManualAppointmentForm
+            ymd={ymd}
+            services={services.map((service) => ({
+              id: service.id,
+              name: service.name,
+              durationMin: service.durationMin,
+            }))}
+          />
         </section>
 
         <section className="rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">

@@ -42,10 +42,19 @@ Telefon: `0554 993 01 23` · WhatsApp aynı numara · Instagram: [@dtmervesen](h
 SMS ücretlidir; bildirim e-posta ile gider. [Resend](https://resend.com) ücretsiz kotası (ayda birkaç bin mail) yeterli.
 
 1. resend.com’da ücretsiz hesap açın, **API Keys** → bir anahtar kopyalayın.
-2. Vercel → **Settings → Environment Variables**:
+2. Vercel → **Settings → Environment Variables** (Production + Preview):
    - `RESEND_API_KEY` — o anahtar
-   - `NOTIFY_EMAIL` — randevu mailinin düşeceği sizin adresiniz (Resend hesabınızla aynı e-posta olmalı; kendi alan adınızı doğrulayana kadar)
-3. Redeploy. Yeni randevu ve iletişim formu mesajı bu kutuya gelir.
+   - `NOTIFY_EMAIL` — **gerçek gelen kutunuz**. Resend’e kayıt olduğunuz e-posta ile aynı olmalı. `ADMIN_EMAIL` (`…@….local`) mail düşmez; yalnızca API anahtarı da yetmez.
+3. Env kaydettikten sonra **Deployments → ⋮ → Redeploy**. Eski deploy eski env ile çalışır.
+4. Site yayına girdikten sonra `/admin/ayarlar` → **Test maili gönder**. Başarı/hata metni ekranda çıkar.
+
+Mail gelmezse kontrol sırası:
+
+1. Test butonundaki hata metni (eksik env, `.local` alıcı, Resend reddi).
+2. Resend paneli → **Emails**: gönderildi mi, bounce mu, “only send to your email” mi.
+3. Gelen kutu **spam / junk**.
+4. Vercel → ilgili deployment → **Logs**: `Bildirim atlandı` veya `E-posta bildirimi gönderilemedi`.
+5. Kendi alan adınızı Resend’de doğrulamadan `NOTIFY_EMAIL` hesap e-postasından farklı olamaz. Doğruladıktan sonra isteğe bağlı `NOTIFY_FROM` kullanın.
 
 Admin: `https://your-domain.com/admin/login`
 
