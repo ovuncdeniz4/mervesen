@@ -82,14 +82,14 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Medya ve sosyal
 
-- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: orijinal `doctor/hero.jpg`, işlenmemiş)
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: işlenmemiş `doctor/hero.jpg`; masaüstünde CSS ile sola siyah uzar)
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
 - Google yorumları: sitede 5.0 / 42 özeti ve Maps’ten alınan özgün yorumlar; tam liste Google Haritalar’da
 
 ## Tasarım
 
-Sıcak krem zemin, sage/teal vurgu, serif başlık + sans gövde. Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
+Sıcak krem zemin, sage/teal vurgu, serif başlık + sans gövde. Anasayfa masaüstü hero: metnin altında tam siyah alan, sağda işlenmemiş lup portresi; diğer sayfalar krem/sage. Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
 
 ## Bilinçli dışı
 
