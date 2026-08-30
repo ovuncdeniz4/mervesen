@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { getClinicSettings } from "@/lib/clinic";
 import { updateClinicSettings } from "@/lib/actions/admin";
+import { TestNotifyForm } from "@/components/admin/TestNotifyForm";
 
 export default async function SettingsPage() {
   await requireAdmin();
@@ -47,6 +48,7 @@ export default async function SettingsPage() {
         ))}
         <button className="w-fit rounded-full bg-sage px-6 py-2 text-white">Kaydet</button>
       </form>
+      <TestNotifyForm />
     </div>
   );
 }

@@ -11,6 +11,8 @@ import {
   rangesOverlap,
 } from "@/lib/availability";
 import { istanbulDateTime, weekdayFromYmd, ymdInIstanbul } from "@/lib/dates";
+import { normalizeTrMobile, TR_MOBILE_ERROR } from "@/lib/phone";
+import { sendTestNotification, type NotifyResult } from "@/lib/notify";
 
 function refreshAdmin() {
   revalidatePath("/admin");
@@ -38,10 +40,11 @@ export async function createManualAppointment(formData: FormData) {
   const ymd = String(formData.get("ymd") ?? "");
   const time = String(formData.get("time") ?? "");
   const patientName = String(formData.get("patientName") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
+  const phoneRaw = String(formData.get("phone") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim();
-  if (!serviceId || !ymd || !time || patientName.length < 2 || phone.length < 10) {
-    return { ok: false as const, error: "Hizmet, tarih, saat, ad ve telefon zorunlu." };
+  const phone = normalizeTrMobile(phoneRaw);
+  if (!serviceId || !ymd || !time || patientName.length < 2 || !phone) {
+    return { ok: false as const, error: !phone ? TR_MOBILE_ERROR : "Hizmet, tarih, saat, ad ve telefon zorunlu." };
   }
   const service = await prisma.service.findUnique({ where: { id: serviceId } });
   if (!service) return { ok: false as const, error: "Hizmet bulunamadı." };
@@ -243,6 +246,14 @@ export async function deleteService(id: string) {
   refreshAdmin();
 }
 
+export async function sendTestNotify(
+  _prev: NotifyResult | null,
+  _formData: FormData,
+): Promise<NotifyResult> {
+  await requireAdmin();
+  return sendTestNotification();
+}
+
 export async function updateClinicSettings(formData: FormData) {
   await requireAdmin();
   await prisma.clinicSettings.update({
@@ -296,8 +307,13 @@ export async function dayBusy(ymd: string) {
   return { appointments, blocks, ymd: ymdInIstanbul(start) };
 }
 
-export async function createManualAppointmentForm(formData: FormData): Promise<void> {
-  await createManualAppointment(formData);
+export type ManualAppointmentState = { ok: true } | { ok: false; error: string };
+
+export async function createManualAppointmentAction(
+  _prev: ManualAppointmentState | null,
+  formData: FormData,
+): Promise<ManualAppointmentState> {
+  return createManualAppointment(formData);
 }
 
 export async function rescheduleAppointmentForm(formData: FormData): Promise<void> {

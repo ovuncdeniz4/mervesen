@@ -14,23 +14,23 @@ import {
 } from "@/lib/availability";
 import { addDaysYmd, todayYmd, weekdayFromYmd, ymdInIstanbul } from "@/lib/dates";
 import { notifyNewAppointment } from "@/lib/notify";
+import { normalizeTrMobile, TR_MOBILE_ERROR } from "@/lib/phone";
 
 const PUBLIC_BOOKING_SERVICE_SLUG = "genel-muayene";
 
 const bookingSchema = z.object({
   startAt: z.string().min(1),
   patientName: z.string().trim().min(2, "Ad soyad en az 2 karakter olmalı.").max(80),
-  phone: z.string().trim().min(10, "Geçerli bir telefon girin.").max(20),
+  phone: z
+    .string()
+    .trim()
+    .refine((value) => Boolean(normalizeTrMobile(value)), TR_MOBILE_ERROR),
   email: z.union([z.string().trim().email("Geçerli bir e-posta girin."), z.literal("")]).optional(),
   notes: z.string().trim().max(500).optional(),
   kvkk: z.string().refine((value) => value === "on", "KVKK onayı gereklidir."),
 });
 
 export type BookingState = { ok: true; id: string } | { ok: false; error: string };
-
-function digitsOnly(value: string): string {
-  return value.replace(/\D/g, "");
-}
 
 async function loadDayContext(ymd: string) {
   const settings = await getClinicSettings();
@@ -124,9 +124,9 @@ export async function bookAppointment(_prev: BookingState | null, formData: Form
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Formu kontrol edin." };
   }
 
-  const phoneDigits = digitsOnly(parsed.data.phone);
-  if (phoneDigits.length < 10) {
-    return { ok: false, error: "Geçerli bir telefon numarası girin." };
+  const phone = normalizeTrMobile(parsed.data.phone);
+  if (!phone) {
+    return { ok: false, error: TR_MOBILE_ERROR };
   }
 
   const startAt = new Date(parsed.data.startAt);
@@ -183,7 +183,7 @@ export async function bookAppointment(_prev: BookingState | null, formData: Form
           startAt,
           endAt,
           patientName: parsed.data.patientName,
-          phone: parsed.data.phone.trim(),
+          phone,
           email: parsed.data.email ? parsed.data.email : null,
           notes: parsed.data.notes ? parsed.data.notes : null,
           kvkkConsent: true,

@@ -42,7 +42,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 
 ## Randevu kuralları
 
-1. Hasta hizmet seçmez. Ad soyad, telefon (e-posta/not isteğe bağlı) ve KVKK sonrası takvimden boş slot seçer.
+1. Hasta hizmet seçmez. Ad soyad, Türkiye cep telefonu (e-posta/not isteğe bağlı) ve KVKK sonrası takvimden boş slot seçer. Telefon `05xx` / `+90 5xx` kabul edilir, `05XXXXXXXXX` olarak saklanır; sabit hat reddedilir.
 2. Public slot süresi `ClinicSettings.slotIntervalMin` (varsayılan 30 dk). Kayıt içerde `genel-muayene` hizmetine bağlanır.
 3. Takvim yalnızca müsait slot gösterir: çalışma saatleri − `CONFIRMED` randevular − `BlockedSlot`.
 4. Geçmiş, `minNoticeHours` içi ve `maxAdvanceDays` dışı slot yok.
@@ -50,7 +50,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 6. Rezervasyon Prisma transaction içinde overlap kontrolü ile atomik yazılır; çakışırsa hata döner.
 7. Durumlar: `CONFIRMED` (anında), `CANCELLED`, `COMPLETED`.
 8. KVKK onayı olmadan kayıt oluşmaz.
-9. Yeni public randevu ve iletişim mesajı, `RESEND_API_KEY` + `NOTIFY_EMAIL` varsa kliniğe e-posta gider. Bildirim başarısız olsa da randevu kaydı durur. SMS yok (ücretli).
+9. Yeni public randevu ve iletişim mesajı, `RESEND_API_KEY` + gerçek `NOTIFY_EMAIL` varsa kliniğe e-posta gider. `ADMIN_EMAIL` (.local) yedek alıcı değildir. Bildirim başarısız olsa da randevu kaydı durur. SMS yok (ücretli). Admin `/admin/ayarlar` üzerinden test maili gönderebilir.
 
 Hasta yüzünde tedavi süresi gösterilmez; süre kişiden kişiye değişir. `Service.durationMin` yalnızca admin manuel randevuda kullanılır.
 
@@ -67,7 +67,7 @@ Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot te
 - `/admin/hizmetler` — CRUD + yayın
 - `/admin/saatler` — çalışma saatleri ve bloklar
 - `/admin/mesajlar` — iletişim formu
-- `/admin/ayarlar` — telefon, WhatsApp, Instagram, adres, bio
+- `/admin/ayarlar` — telefon, WhatsApp, Instagram, adres, bio, randevu e-posta testi
 
 Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
