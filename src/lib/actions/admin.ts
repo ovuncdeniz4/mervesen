@@ -200,6 +200,7 @@ const serviceSchema = z.object({
   sortOrder: z.coerce.number().int(),
   published: z.boolean(),
   featured: z.boolean(),
+  imagePath: z.string().trim().optional(),
 });
 
 export async function saveService(formData: FormData) {
@@ -214,11 +215,13 @@ export async function saveService(formData: FormData) {
     sortOrder: formData.get("sortOrder"),
     published: formData.get("published") === "on",
     featured: formData.get("featured") === "on",
+    imagePath: formData.get("imagePath") ?? "",
   });
   if (!parsed.success) {
     return { ok: false as const, error: parsed.error.issues[0]?.message ?? "Hizmet kaydı geçersiz." };
   }
-  const { id, ...data } = parsed.data;
+  const { id, imagePath, ...rest } = parsed.data;
+  const data = { ...rest, imagePath: imagePath || "" };
   if (id) {
     await prisma.service.update({ where: { id }, data });
   } else {
@@ -257,6 +260,7 @@ export async function updateClinicSettings(formData: FormData) {
       aboutShort: String(formData.get("aboutShort") ?? "").trim(),
       aboutLong: String(formData.get("aboutLong") ?? "").trim(),
       doctorBio: String(formData.get("doctorBio") ?? "").trim(),
+      instagramUrl: String(formData.get("instagramUrl") ?? "").trim(),
     },
   });
   refreshAdmin();

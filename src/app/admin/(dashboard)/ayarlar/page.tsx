@@ -10,6 +10,7 @@ export default async function SettingsPage() {
     { name: "doctorName", label: "Hekim adı" },
     { name: "phone", label: "Telefon" },
     { name: "whatsapp", label: "WhatsApp (5xx… veya 90…)" },
+    { name: "instagramUrl", label: "Instagram URL" },
     { name: "email", label: "E-posta" },
     { name: "address", label: "Adres" },
     { name: "mapsUrl", label: "Harita linki" },

@@ -14,8 +14,9 @@ import {
 } from "@/lib/availability";
 import { addDaysYmd, todayYmd, weekdayFromYmd, ymdInIstanbul } from "@/lib/dates";
 
+const PUBLIC_BOOKING_SERVICE_SLUG = "genel-muayene";
+
 const bookingSchema = z.object({
-  serviceId: z.string().min(1),
   startAt: z.string().min(1),
   patientName: z.string().trim().min(2, "Ad soyad en az 2 karakter olmalı.").max(80),
   phone: z.string().trim().min(10, "Geçerli bir telefon girin.").max(20),
@@ -30,16 +31,27 @@ function digitsOnly(value: string): string {
   return value.replace(/\D/g, "");
 }
 
-export async function getMonthAvailability(serviceId: string, year: number, monthIndex: number) {
-  const [service, settings, hoursRows] = await Promise.all([
-    prisma.service.findFirst({ where: { id: serviceId, published: true } }),
-    getClinicSettings(),
-    prisma.workingHours.findMany(),
+async function loadDayContext(ymd: string) {
+  const settings = await getClinicSettings();
+  const hours = await prisma.workingHours.findUnique({ where: { weekday: weekdayFromYmd(ymd) } });
+  const dayStart = new Date(`${ymd}T00:00:00+03:00`);
+  const dayEnd = new Date(`${ymd}T23:59:59+03:00`);
+  const [appointments, blocks] = await Promise.all([
+    prisma.appointment.findMany({
+      where: { status: { not: "CANCELLED" }, startAt: { lte: dayEnd }, endAt: { gte: dayStart } },
+    }),
+    prisma.blockedSlot.findMany({
+      where: { startAt: { lte: dayEnd }, endAt: { gte: dayStart } },
+    }),
   ]);
-  if (!service) return { days: {} as Record<string, number> };
+  return { settings, hours, appointments, blocks };
+}
 
-  const startYmd = `${year}-${String(monthIndex + 1).padStart(2, "0")}-01`;
+export async function getMonthAvailability(year: number, monthIndex: number) {
+  const [settings, hoursRows] = await Promise.all([getClinicSettings(), prisma.workingHours.findMany()]);
+  const durationMin = settings.slotIntervalMin;
   const lastDay = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+  const startYmd = `${year}-${String(monthIndex + 1).padStart(2, "0")}-01`;
   const endYmd = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
   const rangeStart = new Date(`${startYmd}T00:00:00+03:00`);
   const rangeEnd = new Date(`${endYmd}T23:59:59+03:00`);
@@ -71,38 +83,25 @@ export async function getMonthAvailability(serviceId: string, year: number, mont
     const hours = hoursByDay.get(weekdayFromYmd(ymd));
     const slots = computeSlotsForDay({
       ymd,
-      durationMin: service.durationMin,
+      durationMin,
       settings,
       hours,
       appointments: collectBusyFromAppointments(
         appointments.filter((item) => ymdInIstanbul(item.startAt) === ymd),
       ),
-      blocks: collectBusyFromBlocks(blocks.filter((item) => ymdInIstanbul(item.startAt) === ymd || (item.startAt <= rangeEnd && item.endAt >= rangeStart))),
+      blocks: collectBusyFromBlocks(blocks),
     });
     days[ymd] = slots.length;
   }
   return { days };
 }
 
-export async function getDaySlots(serviceId: string, ymd: string): Promise<{ slots: SlotDto[]; error?: string }> {
-  const service = await prisma.service.findFirst({ where: { id: serviceId, published: true } });
-  if (!service) return { slots: [], error: "Hizmet bulunamadı." };
-  const settings = await getClinicSettings();
-  const hours = await prisma.workingHours.findUnique({ where: { weekday: weekdayFromYmd(ymd) } });
-  const dayStart = new Date(`${ymd}T00:00:00+03:00`);
-  const dayEnd = new Date(`${ymd}T23:59:59+03:00`);
-  const [appointments, blocks] = await Promise.all([
-    prisma.appointment.findMany({
-      where: { status: { not: "CANCELLED" }, startAt: { lte: dayEnd }, endAt: { gte: dayStart } },
-    }),
-    prisma.blockedSlot.findMany({
-      where: { startAt: { lte: dayEnd }, endAt: { gte: dayStart } },
-    }),
-  ]);
+export async function getDaySlots(ymd: string): Promise<{ slots: SlotDto[]; error?: string }> {
+  const { settings, hours, appointments, blocks } = await loadDayContext(ymd);
   return {
     slots: computeSlotsForDay({
       ymd,
-      durationMin: service.durationMin,
+      durationMin: settings.slotIntervalMin,
       settings,
       hours: hours ?? undefined,
       appointments: collectBusyFromAppointments(appointments),
@@ -113,7 +112,6 @@ export async function getDaySlots(serviceId: string, ymd: string): Promise<{ slo
 
 export async function bookAppointment(_prev: BookingState | null, formData: FormData): Promise<BookingState> {
   const parsed = bookingSchema.safeParse({
-    serviceId: formData.get("serviceId"),
     startAt: formData.get("startAt"),
     patientName: formData.get("patientName"),
     phone: formData.get("phone"),
@@ -137,11 +135,14 @@ export async function bookAppointment(_prev: BookingState | null, formData: Form
 
   try {
     const id = await prisma.$transaction(async (tx) => {
-      const service = await tx.service.findFirst({ where: { id: parsed.data.serviceId, published: true } });
-      if (!service) throw new Error("Hizmet bulunamadı.");
+      const service =
+        (await tx.service.findFirst({ where: { slug: PUBLIC_BOOKING_SERVICE_SLUG, published: true } })) ??
+        (await tx.service.findFirst({ where: { published: true }, orderBy: { sortOrder: "asc" } }));
+      if (!service) throw new Error("Randevu kaydı için hizmet tanımı bulunamadı.");
       const settings = await tx.clinicSettings.findUnique({ where: { id: "default" } });
       if (!settings) throw new Error("Klinik ayarları eksik.");
-      const endAt = new Date(startAt.getTime() + service.durationMin * 60 * 1000);
+      const durationMin = settings.slotIntervalMin;
+      const endAt = new Date(startAt.getTime() + durationMin * 60 * 1000);
       const ymd = ymdInIstanbul(startAt);
       const hours = await tx.workingHours.findUnique({ where: { weekday: weekdayFromYmd(ymd) } });
       if (!hours || !isWithinWorkingHours(startAt, endAt, hours)) {

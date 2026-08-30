@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { getClinicSettings, getPublishedServices, getWorkingHours, telLink } from "@/lib/clinic";
+import Image from "next/image";
+import { getClinicSettings, getPublishedServices, getWorkingHours, telLink, whatsappLink } from "@/lib/clinic";
 import { PublicShell, Prose } from "@/components/public/PublicShell";
 import { LocalBusinessJsonLd } from "@/components/public/LocalBusinessJsonLd";
+import { GoogleReviews } from "@/components/public/GoogleReviews";
+import { InstagramSection } from "@/components/public/InstagramSection";
+import { ClinicGallery } from "@/components/public/ClinicGallery";
 import { weekdayLabel } from "@/lib/dates";
+import { publicImageExists } from "@/lib/public-image";
 
 export default async function HomePage() {
   const [clinic, services, hours] = await Promise.all([
@@ -12,6 +17,8 @@ export default async function HomePage() {
   ]);
   const featured = services.filter((item) => item.featured).slice(0, 6);
   const tel = telLink(clinic.phone);
+  const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
+  const heroPortrait = publicImageExists("/images/doctor/portrait-1.jpg");
 
   return (
     <PublicShell clinic={clinic}>
@@ -28,23 +35,47 @@ export default async function HomePage() {
               <Link href="/randevu" className="rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
                 Randevu al
               </Link>
-              <Link href="/hizmetler" className="rounded-full border border-sage/40 px-6 py-3 text-sage-dark">
-                Tedavilere bak
-              </Link>
+              {wa ? (
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full bg-[#25D366] px-6 py-3 text-white"
+                >
+                  WhatsApp
+                </a>
+              ) : null}
+              {tel ? (
+                <a href={tel} className="rounded-full border border-sage/40 px-6 py-3 text-sage-dark">
+                  Ara · {clinic.phone}
+                </a>
+              ) : null}
             </div>
           </div>
-          <div className="relative rounded-[2rem] bg-sage-dark p-8 text-sage-light shadow-xl">
-            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gold/20" />
-            <p className="font-serif text-3xl text-white">{clinic.doctorName}</p>
-            <p className="mt-4 text-sm leading-relaxed text-sage-light/80">{clinic.aboutShort}</p>
-            <dl className="mt-8 space-y-2 text-sm">
-              {hours.map((row) => (
-                <div key={row.weekday} className="flex justify-between gap-4 border-b border-white/10 py-1">
-                  <dt>{weekdayLabel(row.weekday)}</dt>
-                  <dd>{row.closed ? "Kapalı" : `${row.startTime}–${row.endTime}`}</dd>
-                </div>
-              ))}
-            </dl>
+          <div className="relative overflow-hidden rounded-[2rem] bg-sage-dark shadow-xl">
+            {heroPortrait ? (
+              <div className="relative aspect-[4/5] min-h-[22rem]">
+                <Image
+                  src="/images/doctor/portrait-1.jpg"
+                  alt={clinic.doctorName}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  priority
+                />
+              </div>
+            ) : (
+              <div className="p-8 text-sage-light">
+                <p className="font-serif text-3xl text-white">{clinic.doctorName}</p>
+                <p className="mt-4 text-sm leading-relaxed text-sage-light/80">{clinic.aboutShort}</p>
+              </div>
+            )}
+            {heroPortrait ? (
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-sage-dark/90 to-transparent p-6 text-white">
+                <p className="font-serif text-3xl">{clinic.doctorName}</p>
+                <p className="mt-2 text-sm leading-relaxed text-sage-light/90">{clinic.aboutShort}</p>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
@@ -62,11 +93,23 @@ export default async function HomePage() {
               <Link
                 key={service.id}
                 href={`/hizmetler/${service.slug}`}
-                className="rounded-3xl border border-cream-dark bg-cream p-6 hover:border-sage/40"
+                className="overflow-hidden rounded-3xl border border-cream-dark bg-cream hover:border-sage/40"
               >
-                <h3 className="font-serif text-2xl text-sage-dark">{service.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
-                <p className="mt-4 text-xs uppercase tracking-widest text-gold">{service.durationMin} dk</p>
+                {service.imagePath ? (
+                  <span className="relative block aspect-[16/10]">
+                    <Image
+                      src={service.imagePath}
+                      alt={service.name}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 30vw, 100vw"
+                    />
+                  </span>
+                ) : null}
+                <span className="block p-6">
+                  <h3 className="font-serif text-2xl text-sage-dark">{service.name}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
+                </span>
               </Link>
             ))}
           </div>
@@ -76,35 +119,42 @@ export default async function HomePage() {
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2">
         <div>
           <h2 className="font-serif text-3xl text-sage-dark">Hekim</h2>
-          <Prose text={clinic.doctorBio} className="mt-4" />
+          <Prose text={clinic.aboutShort} className="mt-4" />
           <Link href="/hakkimizda" className="mt-6 inline-block text-sage-dark underline">
             Kliniği tanı
           </Link>
         </div>
         <div className="rounded-3xl bg-sage-light/40 p-8">
-          <h2 className="font-serif text-3xl text-sage-dark">Konum</h2>
-          <p className="mt-3 text-ink-soft">{clinic.address}</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <a
-              href={clinic.mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-sage px-5 py-2 text-white"
-            >
-              Haritada aç
-            </a>
-            {tel ? (
-              <a href={tel} className="rounded-full border border-sage px-5 py-2 text-sage-dark">
-                {clinic.phone}
-              </a>
-            ) : (
-              <Link href="/iletisim" className="rounded-full border border-sage px-5 py-2 text-sage-dark">
-                İletişim
-              </Link>
-            )}
-          </div>
+          <h2 className="font-serif text-3xl text-sage-dark">Çalışma saatleri</h2>
+          <dl className="mt-5 space-y-2 text-sm">
+            {hours.map((row) => (
+              <div key={row.weekday} className="flex justify-between gap-4 border-b border-sage/15 py-1">
+                <dt>{weekdayLabel(row.weekday)}</dt>
+                <dd>{row.closed ? "Kapalı" : `${row.startTime}–${row.endTime}`}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+        <h2 className="font-serif text-3xl text-sage-dark">Klinik</h2>
+        <p className="mt-2 max-w-2xl text-ink-soft">{clinic.address}</p>
+        <div className="mt-6">
+          <ClinicGallery />
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href={clinic.mapsUrl} target="_blank" rel="noreferrer" className="rounded-full bg-sage px-5 py-2 text-white">
+            Haritada aç
+          </a>
+          <Link href="/iletisim" className="rounded-full border border-sage px-5 py-2 text-sage-dark">
+            İletişim
+          </Link>
+        </div>
+      </section>
+
+      <GoogleReviews mapsUrl={clinic.mapsUrl} />
+      <InstagramSection instagramUrl={clinic.instagramUrl} />
     </PublicShell>
   );
 }

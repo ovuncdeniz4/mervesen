@@ -4,7 +4,7 @@ import { telLink, whatsappLink } from "@/lib/clinic";
 
 export function Footer({ clinic }: { clinic: ClinicSettings }) {
   const tel = telLink(clinic.phone);
-  const wa = whatsappLink(clinic.whatsapp);
+  const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
   return (
     <footer className="mt-auto border-t border-cream-dark bg-sage-dark text-sage-light">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3 sm:px-6">
@@ -25,7 +25,14 @@ export function Footer({ clinic }: { clinic: ClinicSettings }) {
           {wa ? (
             <p className="mt-1">
               <a href={wa} className="hover:text-white" target="_blank" rel="noreferrer">
-                WhatsApp
+                WhatsApp ile yazın
+              </a>
+            </p>
+          ) : null}
+          {clinic.instagramUrl ? (
+            <p className="mt-1">
+              <a href={clinic.instagramUrl} className="hover:text-white" target="_blank" rel="noreferrer">
+                Instagram · @dtmervesen
               </a>
             </p>
           ) : null}

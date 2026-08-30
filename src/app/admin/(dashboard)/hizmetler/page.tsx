@@ -30,6 +30,7 @@ function ServiceForm({
     summary: string;
     content: string;
     durationMin: number;
+    imagePath: string;
     sortOrder: number;
     published: boolean;
     featured: boolean;
@@ -44,9 +45,15 @@ function ServiceForm({
       </div>
       <input name="summary" defaultValue={service?.summary} placeholder="Kısa özet" required className="rounded-xl border border-cream-dark px-3 py-2" />
       <textarea name="content" defaultValue={service?.content} rows={6} required className="rounded-xl border border-cream-dark px-3 py-2" />
+      <input
+        name="imagePath"
+        defaultValue={service?.imagePath}
+        placeholder="Görsel yolu (/images/services/...)"
+        className="rounded-xl border border-cream-dark px-3 py-2"
+      />
       <div className="flex flex-wrap gap-4">
         <label className="text-sm">
-          Süre
+          Süre (yalnızca takvim, sitede gösterilmez)
           <input type="number" name="durationMin" defaultValue={service?.durationMin ?? 30} className="ml-2 w-20 rounded border px-2 py-1" />
         </label>
         <label className="text-sm">

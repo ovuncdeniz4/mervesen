@@ -23,8 +23,8 @@ export function PublicShell({
 export function Prose({ text, className = "" }: { text: string; className?: string }) {
   return (
     <div className={`space-y-4 text-ink-soft leading-relaxed ${className}`}>
-      {text.split(/\n\n+/).map((paragraph) => (
-        <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+      {text.split(/\n\n+/).map((paragraph, index) => (
+        <p key={`${index}-${paragraph.slice(0, 20)}`}>{paragraph}</p>
       ))}
     </div>
   );

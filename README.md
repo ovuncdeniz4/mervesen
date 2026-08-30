@@ -16,6 +16,6 @@ npm run dev
 - Admin: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 - Varsayılan giriş (`.env`): `admin@mervesenaskar.local` / `MerveAdmin2026`
 
-Telefon ve WhatsApp numaralarını admin → Ayarlar’dan girin; boşken arama ve yüzen WhatsApp gizlenir.
+Telefon: `0554 993 01 23` · WhatsApp aynı numara · Instagram: [@dtmervesen](https://www.instagram.com/dtmervesen/)
 
 Mimari: [docs/architecture.md](docs/architecture.md)

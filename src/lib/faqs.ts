@@ -1,7 +1,7 @@
 export const faqs = [
   {
     q: "Online randevu nasıl alınır?",
-    a: "Randevu sayfasından tedaviyi seçin, müsait gün ve saati işaretleyin, iletişim bilgilerinizi yazın. Slot anında sizin için ayrılır. Dilerseniz WhatsApp veya telefonla da yazabilirsiniz.",
+    a: "Randevu sayfasında ad soyad ve telefonunuzu yazın, takvimden uygun boş saati seçin. Hizmet seçmeniz gerekmez. Dilerseniz WhatsApp veya telefonla da yazabilirsiniz.",
   },
   {
     q: "İlk muayenede ne olur?",

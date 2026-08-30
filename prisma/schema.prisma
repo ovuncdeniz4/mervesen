@@ -28,6 +28,7 @@ model ClinicSettings {
   aboutShort      String
   aboutLong       String
   doctorBio       String
+  instagramUrl    String @default("https://www.instagram.com/dtmervesen/")
   minNoticeHours  Int    @default(2)
   maxAdvanceDays  Int    @default(60)
   slotIntervalMin Int    @default(30)
@@ -40,6 +41,7 @@ model Service {
   summary      String
   content      String
   durationMin  Int
+  imagePath    String        @default("")
   sortOrder    Int           @default(0)
   published    Boolean       @default(true)
   featured     Boolean       @default(false)

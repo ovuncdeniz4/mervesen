@@ -18,7 +18,9 @@ Expo / React Native kullanılmaz. Bu bir web uygulamasıdır.
 - `src/app/` — public rotalar, `admin/` paneli, `api/auth` session
 - `src/components/` — layout, UI, randevu ve admin bileşenleri
 - `src/lib/` — Prisma istemcisi, auth, müsaitlik motoru, server actions
+- `src/lib/content/` — hizmet metinleri, hakkımızda, Google yorumları
 - `prisma/` — şema ve seed
+- `public/images/` — klinik, hekim ve hizmet görselleri
 - `docs/` — bu mimari dosya
 
 Yeni ekran eklerken mevcut rota ve klasör hiyerarşisine uy; paralel `pages/` veya ikinci bir app kökü açma.
@@ -27,12 +29,12 @@ Yeni ekran eklerken mevcut rota ve klasör hiyerarşisine uy; paralel `pages/` v
 
 | Rota | Amaç |
 |------|------|
-| `/` | Hero, tedaviler, hekim, konum, randevu CTA |
-| `/hakkimizda` | Hekim ve klinik yaklaşımı |
-| `/hizmetler` | Tedavi listesi |
-| `/hizmetler/[slug]` | Tedavi detay |
-| `/randevu` | Canlı slot seçimi ve rezervasyon |
-| `/iletisim` | Adres, harita, form, telefon/WhatsApp |
+| `/` | Hero, tedaviler, hekim, klinik galerisi, Google yorumları, Instagram |
+| `/hakkimizda` | Sabit hakkımızda metni, hekim ve klinik görselleri |
+| `/hizmetler` | Tedavi listesi (süre gösterilmez) |
+| `/hizmetler/[slug]` | Tedavi detay + stok görsel |
+| `/randevu` | Bilgi + canlı slot; hizmet seçimi yok |
+| `/iletisim` | Adres, harita, form, telefon/WhatsApp, yorumlar |
 | `/sss` | Sık sorulanlar |
 | `/kvkk` | Aydınlatma metni |
 
@@ -40,15 +42,20 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 
 ## Randevu kuralları
 
-1. Hasta hizmet seçer (süre hizmet kaydındaki `durationMin`).
-2. Takvim yalnızca müsait slot gösterir: çalışma saatleri − `CONFIRMED` randevular − `BlockedSlot`.
-3. Geçmiş, `minNoticeHours` içi ve `maxAdvanceDays` dışı slot yok.
-4. Kapalı gün ve blok aralıklarında slot üretilmez.
-5. Rezervasyon Prisma transaction içinde overlap kontrolü ile atomik yazılır; çakışırsa hata döner.
-6. Durumlar: `CONFIRMED` (anında), `CANCELLED`, `COMPLETED`.
-7. KVKK onayı olmadan kayıt oluşmaz.
+1. Hasta hizmet seçmez. Ad soyad, telefon (e-posta/not isteğe bağlı) ve KVKK sonrası takvimden boş slot seçer.
+2. Public slot süresi `ClinicSettings.slotIntervalMin` (varsayılan 30 dk). Kayıt içerde `genel-muayene` hizmetine bağlanır.
+3. Takvim yalnızca müsait slot gösterir: çalışma saatleri − `CONFIRMED` randevular − `BlockedSlot`.
+4. Geçmiş, `minNoticeHours` içi ve `maxAdvanceDays` dışı slot yok.
+5. Kapalı gün ve blok aralıklarında slot üretilmez.
+6. Rezervasyon Prisma transaction içinde overlap kontrolü ile atomik yazılır; çakışırsa hata döner.
+7. Durumlar: `CONFIRMED` (anında), `CANCELLED`, `COMPLETED`.
+8. KVKK onayı olmadan kayıt oluşmaz.
 
-Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot tekrar açılır.
+Hasta yüzünde tedavi süresi gösterilmez; süre kişiden kişiye değişir. `Service.durationMin` yalnızca admin manuel randevuda kullanılır.
+
+WhatsApp ve telefon `ClinicSettings` üzerinden gelir (0554 993 01 23). Yüzen WhatsApp, header, randevu ve iletişimde mesaj/arama bağlantısı vardır.
+
+Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot tekrar açılır. Admin manuel randevuda hizmet seçebilir.
 
 ## Admin
 
@@ -59,23 +66,30 @@ Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot te
 - `/admin/hizmetler` — CRUD + yayın
 - `/admin/saatler` — çalışma saatleri ve bloklar
 - `/admin/mesajlar` — iletişim formu
-- `/admin/ayarlar` — telefon, WhatsApp, adres, bio
+- `/admin/ayarlar` — telefon, WhatsApp, Instagram, adres, bio
 
 Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Veri
 
-- `ClinicSettings` — tek satır iletişim ve metin
-- `Service` — slug, süre, içerik, `published`
+- `ClinicSettings` — tek satır iletişim, Instagram ve metin
+- `Service` — slug, içerik, `imagePath`, `durationMin` (iç kullanım), `published`
 - `WorkingHours` — weekday 0–6 (Pazar=0)
 - `BlockedSlot` — tatil / öğle arası
 - `Appointment` — hasta ve zaman aralığı
 - `ContactMessage` — iletişim formu
 - `AdminUser` — giriş
 
+## Medya ve sosyal
+
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor`
+- Hizmet stok görselleri `public/images/services/{slug}.jpg`
+- Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
+- Google yorumları: sitede 5.0 / 42 özeti ve Maps’ten alınan özgün yorumlar; tam liste Google Haritalar’da
+
 ## Tasarım
 
-Sıcak krem zemin, sage/teal vurgu, serif başlık + sans gövde. Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli. WhatsApp floating butonu ayarlardaki numaradan gelir.
+Sıcak krem zemin, sage/teal vurgu, serif başlık + sans gövde. Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
 
 ## Bilinçli dışı
 

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { getClinicSettings, getWorkingHours, telLink } from "@/lib/clinic";
+import { getClinicSettings, getWorkingHours, telLink, whatsappLink } from "@/lib/clinic";
 import { PublicShell } from "@/components/public/PublicShell";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { GoogleReviews } from "@/components/public/GoogleReviews";
 import { weekdayLabel } from "@/lib/dates";
 
 export const metadata: Metadata = { title: "İletişim" };
@@ -9,6 +10,7 @@ export const metadata: Metadata = { title: "İletişim" };
 export default async function ContactPage() {
   const [clinic, hours] = await Promise.all([getClinicSettings(), getWorkingHours()]);
   const tel = telLink(clinic.phone);
+  const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
 
   return (
     <PublicShell clinic={clinic}>
@@ -16,17 +18,30 @@ export default async function ContactPage() {
         <div>
           <h1 className="font-serif text-4xl text-sage-dark sm:text-5xl">İletişim</h1>
           <p className="mt-4 text-ink-soft">{clinic.address}</p>
-          {tel ? (
-            <p className="mt-2">
-              <a href={tel} className="text-sage-dark underline">
-                {clinic.phone}
+          <div className="mt-5 flex flex-wrap gap-3">
+            {wa ? (
+              <a href={wa} target="_blank" rel="noreferrer" className="rounded-full bg-[#25D366] px-5 py-2 text-white">
+                WhatsApp ile yazın
               </a>
-            </p>
-          ) : (
-            <p className="mt-2 text-sm text-ink-soft">Telefon numarası henüz eklenmedi; formu kullanabilirsiniz.</p>
-          )}
+            ) : null}
+            {tel ? (
+              <a href={tel} className="rounded-full border border-sage px-5 py-2 text-sage-dark">
+                Ara · {clinic.phone}
+              </a>
+            ) : null}
+            {clinic.instagramUrl ? (
+              <a
+                href={clinic.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-sage px-5 py-2 text-sage-dark"
+              >
+                Instagram
+              </a>
+            ) : null}
+          </div>
           {clinic.email ? (
-            <p className="mt-1">
+            <p className="mt-4">
               <a href={`mailto:${clinic.email}`} className="text-sage-dark underline">
                 {clinic.email}
               </a>
@@ -63,6 +78,7 @@ export default async function ContactPage() {
           <ContactForm />
         </div>
       </div>
+      <GoogleReviews mapsUrl={clinic.mapsUrl} />
     </PublicShell>
   );
 }

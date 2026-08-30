@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getClinicSettings } from "@/lib/clinic";
+import { getClinicSettings, telLink, whatsappLink } from "@/lib/clinic";
 import { PublicShell, Prose } from "@/components/public/PublicShell";
 
 export async function generateMetadata({
@@ -27,6 +28,8 @@ export default async function ServiceDetailPage({
     prisma.service.findFirst({ where: { slug, published: true } }),
   ]);
   if (!service) notFound();
+  const wa = whatsappLink(clinic.whatsapp, `Merhaba, ${service.name} hakkında bilgi almak istiyorum.`);
+  const tel = telLink(clinic.phone);
 
   return (
     <PublicShell clinic={clinic}>
@@ -34,13 +37,35 @@ export default async function ServiceDetailPage({
         <Link href="/hizmetler" className="text-sm text-sage-dark">
           ← Tüm hizmetler
         </Link>
-        <h1 className="mt-4 font-serif text-4xl text-sage-dark sm:text-5xl">{service.name}</h1>
-        <p className="mt-3 text-lg text-ink-soft">{service.summary}</p>
-        <p className="mt-2 text-xs uppercase tracking-widest text-gold">Seans süresi {service.durationMin} dakika</p>
+        {service.imagePath ? (
+          <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[2rem]">
+            <Image
+              src={service.imagePath}
+              alt={service.name}
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 768px, 100vw"
+              priority
+            />
+          </div>
+        ) : null}
+        <h1 className="mt-6 font-serif text-4xl text-sage-dark sm:text-5xl">{service.name}</h1>
         <Prose text={service.content} className="mt-8" />
-        <Link href="/randevu" className="mt-10 inline-block rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
-          Bu tedavi için randevu al
-        </Link>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Link href="/randevu" className="rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
+            Randevu al
+          </Link>
+          {wa ? (
+            <a href={wa} target="_blank" rel="noreferrer" className="rounded-full bg-[#25D366] px-6 py-3 text-white">
+              WhatsApp
+            </a>
+          ) : null}
+          {tel ? (
+            <a href={tel} className="rounded-full border border-sage px-6 py-3 text-sage-dark">
+              Ara · {clinic.phone}
+            </a>
+          ) : null}
+        </div>
       </article>
     </PublicShell>
   );
