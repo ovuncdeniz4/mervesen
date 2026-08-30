@@ -46,11 +46,10 @@ async function main() {
     update: { passwordHash },
   });
 
-  await prisma.clinicSettings.upsert({
-    where: { id: "default" },
-    create: { id: "default", ...clinicData },
-    update: clinicData,
-  });
+  const clinic = await prisma.clinicSettings.findUnique({ where: { id: "default" } });
+  if (!clinic) {
+    await prisma.clinicSettings.create({ data: { id: "default", ...clinicData } });
+  }
 
   const keepSlugs = servicesCatalog.map((item) => item.slug);
   for (const service of servicesCatalog) {
@@ -76,12 +75,9 @@ async function main() {
     data: { published: false },
   });
 
-  for (const row of weekdayHours) {
-    await prisma.workingHours.upsert({
-      where: { weekday: row.weekday },
-      create: row,
-      update: row,
-    });
+  const hoursCount = await prisma.workingHours.count();
+  if (hoursCount === 0) {
+    await prisma.workingHours.createMany({ data: weekdayHours });
   }
 }
 
