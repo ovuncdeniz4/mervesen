@@ -101,7 +101,7 @@ Palette (`src/app/globals.css` `@theme`):
 
 Tipografi: Cormorant Garamond (serif başlık) + DM Sans (gövde ve nav), `next/font` ile `layout.tsx`.
 
-Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda işlenmemiş B&W portre (`object-contain`, yüz kırpılmaz). Siyah→espresso geçişi fotoğrafın dışında, metin ile görsel arasındaki şeritte. Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
+Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda işlenmemiş B&W portre (`object-contain object-right`, sağ kenara yaslı, yüz kırpılmaz). Siyah→espresso geçişi fotoğrafın dışında, metin ile görsel arasındaki şeritte. Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
 
 Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
 
