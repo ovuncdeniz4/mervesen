@@ -33,12 +33,12 @@ export default async function ServiceDetailPage({
 
   return (
     <PublicShell clinic={clinic}>
-      <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <Link href="/hizmetler" className="text-sm text-sage-dark">
+      <article className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-24">
+        <Link href="/hizmetler" className="text-sm text-espresso underline decoration-champagne underline-offset-4">
           ← Tüm hizmetler
         </Link>
         {imageSrc ? (
-          <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[2rem]">
+          <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-lg border border-champagne">
             <Image
               src={imageSrc}
               alt={service.name}
@@ -49,9 +49,12 @@ export default async function ServiceDetailPage({
             />
           </div>
         ) : null}
-        <h1 className="mt-6 font-serif text-4xl text-sage-dark sm:text-5xl">{service.name}</h1>
+        <h1 className="mt-8 font-serif text-4xl text-espresso sm:text-5xl">{service.name}</h1>
         <Prose text={service.content} className="mt-8" />
-        <Link href="/randevu" className="mt-10 inline-block rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
+        <Link
+          href="/randevu"
+          className="mt-12 inline-block rounded-md bg-burgundy px-6 py-3 text-ivory transition-colors hover:bg-champagne hover:text-espresso"
+        >
           Randevu al
         </Link>
       </article>

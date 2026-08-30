@@ -7,54 +7,54 @@ export function Footer({ clinic }: { clinic: ClinicSettings }) {
   const tel = telLink(clinic.phone);
   const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
   return (
-    <footer className="mt-auto border-t border-cream-dark bg-sage-dark text-sage-light">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3 sm:px-6">
+    <footer className="mt-auto border-t border-white/10 bg-espresso text-champagne">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-3 sm:px-6">
         <div>
           <BrandLink clinic={clinic} variant="footer" />
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-sage-light/80">{clinic.tagline}</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-champagne/80">{clinic.tagline}</p>
         </div>
         <div className="text-sm leading-relaxed">
-          <p className="mb-2 uppercase tracking-widest text-gold">Adres</p>
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-taupe">Adres</p>
           <p>{clinic.address}</p>
           {tel ? (
             <p className="mt-2">
-              <a href={tel} className="hover:text-white">
+              <a href={tel} className="hover:text-ivory">
                 {clinic.phone}
               </a>
             </p>
           ) : null}
           {wa ? (
             <p className="mt-1">
-              <a href={wa} className="hover:text-white" target="_blank" rel="noreferrer">
+              <a href={wa} className="hover:text-ivory" target="_blank" rel="noreferrer">
                 WhatsApp ile yazın
               </a>
             </p>
           ) : null}
           {clinic.instagramUrl ? (
             <p className="mt-1">
-              <a href={clinic.instagramUrl} className="hover:text-white" target="_blank" rel="noreferrer">
+              <a href={clinic.instagramUrl} className="hover:text-ivory" target="_blank" rel="noreferrer">
                 Instagram · @dtmervesen
               </a>
             </p>
           ) : null}
         </div>
         <div className="flex flex-col gap-2 text-sm">
-          <p className="mb-2 uppercase tracking-widest text-gold">Sayfalar</p>
-          <Link href="/hizmetler" className="hover:text-white">
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-taupe">Sayfalar</p>
+          <Link href="/hizmetler" className="hover:text-ivory">
             Tedaviler
           </Link>
-          <Link href="/randevu" className="hover:text-white">
+          <Link href="/randevu" className="hover:text-ivory">
             Online randevu
           </Link>
-          <Link href="/kvkk" className="hover:text-white">
+          <Link href="/kvkk" className="hover:text-ivory">
             KVKK
           </Link>
-          <Link href="/admin/login" className="hover:text-white">
+          <Link href="/admin/login" className="hover:text-ivory">
             Yönetim
           </Link>
         </div>
       </div>
-      <p className="border-t border-white/10 py-4 text-center text-xs text-sage-light/70">
+      <p className="border-t border-white/10 py-4 text-center text-xs text-champagne/70">
         © {new Date().getFullYear()} {clinic.clinicName}
       </p>
     </footer>

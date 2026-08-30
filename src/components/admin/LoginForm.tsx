@@ -14,7 +14,7 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+          className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
         />
       </label>
       <label className="block text-sm">
@@ -24,14 +24,14 @@ export function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
-          className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+          className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
         />
       </label>
-      {state?.error ? <p className="text-sm text-red-800">{state.error}</p> : null}
+      {state?.error ? <p className="text-sm text-burgundy">{state.error}</p> : null}
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-sage py-3 text-white hover:bg-sage-dark disabled:opacity-50"
+        className="w-full rounded-md bg-burgundy py-3 text-ivory transition-colors hover:bg-champagne hover:text-espresso disabled:opacity-50"
       >
         {pending ? "Giriş…" : "Giriş yap"}
       </button>

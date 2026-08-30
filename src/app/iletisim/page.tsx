@@ -13,39 +13,39 @@ export default async function ContactPage() {
 
   return (
     <PublicShell clinic={clinic}>
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-6xl gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-2">
         <div>
-          <h1 className="font-serif text-4xl text-sage-dark sm:text-5xl">İletişim</h1>
-          <p className="mt-4 text-ink-soft">{clinic.address}</p>
+          <h1 className="font-serif text-4xl text-espresso sm:text-5xl">İletişim</h1>
+          <p className="mt-5 text-muted">{clinic.address}</p>
           {tel ? (
             <p className="mt-3">
-              <a href={tel} className="text-sage-dark underline">
+              <a href={tel} className="text-espresso underline decoration-champagne underline-offset-4">
                 {clinic.phone}
               </a>
             </p>
           ) : null}
           {clinic.instagramUrl ? (
             <p className="mt-2">
-              <a href={clinic.instagramUrl} className="text-sage-dark underline" target="_blank" rel="noreferrer">
+              <a href={clinic.instagramUrl} className="text-espresso underline decoration-champagne underline-offset-4" target="_blank" rel="noreferrer">
                 Instagram · @dtmervesen
               </a>
             </p>
           ) : null}
           {clinic.email ? (
             <p className="mt-4">
-              <a href={`mailto:${clinic.email}`} className="text-sage-dark underline">
+              <a href={`mailto:${clinic.email}`} className="text-espresso underline decoration-champagne underline-offset-4">
                 {clinic.email}
               </a>
             </p>
           ) : null}
-          <a href={clinic.mapsUrl} className="mt-4 inline-block text-sage-dark underline" target="_blank" rel="noreferrer">
+          <a href={clinic.mapsUrl} className="mt-4 inline-block text-espresso underline decoration-champagne underline-offset-4" target="_blank" rel="noreferrer">
             Google Haritalar
           </a>
-          <dl className="mt-8 max-w-sm space-y-1 text-sm">
+          <dl className="mt-10 max-w-sm space-y-1.5 text-sm">
             {hours.map((row) => (
               <div key={row.weekday} className="flex justify-between gap-6">
                 <dt>{weekdayLabel(row.weekday)}</dt>
-                <dd className="text-ink-soft">
+                <dd className="text-muted">
                   {row.closed
                     ? "Kapalı"
                     : `${row.startTime}–${row.endTime}${row.breakStart ? ` (ara ${row.breakStart}–${row.breakEnd})` : ""}`}
@@ -53,7 +53,7 @@ export default async function ContactPage() {
               </div>
             ))}
           </dl>
-          <div className="mt-8 overflow-hidden rounded-3xl ring-1 ring-cream-dark">
+          <div className="mt-10 overflow-hidden rounded-lg border border-champagne">
             <iframe
               title="Klinik konumu"
               src={clinic.mapsEmbedUrl}
@@ -64,8 +64,8 @@ export default async function ContactPage() {
           </div>
         </div>
         <div>
-          <h2 className="font-serif text-3xl text-sage-dark">Yazın</h2>
-          <p className="mt-2 mb-6 text-ink-soft">Randevu dışı sorularınız için formu doldurun.</p>
+          <h2 className="font-serif text-3xl text-espresso">Yazın</h2>
+          <p className="mt-3 mb-8 text-muted">Randevu dışı sorularınız için formu doldurun.</p>
           <ContactForm />
         </div>
       </div>

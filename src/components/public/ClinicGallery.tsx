@@ -14,7 +14,7 @@ export function PhotoGrid({
   return (
     <div className={`grid gap-3 ${className}`}>
       {visible.map((item) => (
-        <figure key={item.src} className="relative min-h-56 overflow-hidden rounded-3xl bg-sage-light">
+        <figure key={item.src} className="relative min-h-56 overflow-hidden rounded-lg border border-champagne bg-paper">
           <Image src={item.src} alt={item.alt} fill className="object-cover" sizes="(min-width: 1024px) 50vw, 100vw" />
         </figure>
       ))}

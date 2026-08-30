@@ -22,7 +22,7 @@ export function PublicShell({
 
 export function Prose({ text, className = "" }: { text: string; className?: string }) {
   return (
-    <div className={`space-y-4 text-ink-soft leading-relaxed ${className}`}>
+    <div className={`space-y-4 leading-relaxed text-muted ${className}`}>
       {text.split(/\n\n+/).map((paragraph, index) => (
         <p key={`${index}-${paragraph.slice(0, 20)}`}>{paragraph}</p>
       ))}

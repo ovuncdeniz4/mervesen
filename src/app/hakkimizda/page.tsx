@@ -13,16 +13,16 @@ export default async function AboutPage() {
 
   return (
     <PublicShell clinic={clinic}>
-      <article className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <p className="text-sm uppercase tracking-widest text-gold">Hakkımızda</p>
-        <h1 className="mt-2 font-serif text-4xl text-sage-dark sm:text-5xl">{aboutPage.pageTitle}</h1>
+      <article className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+        <p className="text-xs uppercase tracking-[0.2em] text-taupe">Hakkımızda</p>
+        <h1 className="mt-3 font-serif text-4xl text-espresso sm:text-5xl">{aboutPage.pageTitle}</h1>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-12">
+        <div className="mt-14 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-14">
             {aboutPage.sections.map((section) => (
               <section key={section.heading}>
-                <h2 className="font-serif text-3xl text-sage-dark">{section.heading}</h2>
-                <div className="mt-4 space-y-4 text-lg leading-relaxed text-ink-soft">
+                <h2 className="font-serif text-3xl text-espresso">{section.heading}</h2>
+                <div className="mt-5 space-y-4 text-lg leading-relaxed text-muted">
                   {section.paragraphs.map((paragraph) => (
                     <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                   ))}
@@ -32,7 +32,7 @@ export default async function AboutPage() {
           </div>
           <aside className="space-y-4">
             {publicImageExists("/images/doctor/portrait-1.jpg") ? (
-              <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-champagne">
                 <Image
                   src="/images/doctor/portrait-1.jpg"
                   alt={clinic.doctorName}
@@ -46,10 +46,10 @@ export default async function AboutPage() {
           </aside>
         </div>
 
-        <section className="mt-16">
-          <h2 className="font-serif text-3xl text-sage-dark">Klinik görselleri</h2>
-          <p className="mt-2 text-ink-soft">{clinic.address}</p>
-          <div className="mt-6">
+        <section className="mt-20">
+          <h2 className="font-serif text-3xl text-espresso">Klinik görselleri</h2>
+          <p className="mt-3 text-muted">{clinic.address}</p>
+          <div className="mt-8">
             <ClinicGallery />
           </div>
         </section>

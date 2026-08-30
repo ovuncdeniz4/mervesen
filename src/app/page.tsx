@@ -23,22 +23,22 @@ export default async function HomePage() {
       <LocalBusinessJsonLd clinic={clinic} />
       <HomeHero clinic={clinic} />
 
-      <section className="bg-paper">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section className="bg-ivory">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="font-serif text-3xl text-sage-dark sm:text-4xl">Tedaviler</h2>
-            <Link href="/hizmetler" className="text-sm text-sage-dark underline">
+            <h2 className="font-serif text-3xl text-espresso sm:text-4xl">Tedaviler</h2>
+            <Link href="/hizmetler" className="text-sm text-espresso underline decoration-champagne underline-offset-4">
               Tümünü gör
             </Link>
           </div>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((service) => {
               const imageSrc = serviceImageSrc(service.slug, service.imagePath);
               return (
               <Link
                 key={service.id}
                 href={`/hizmetler/${service.slug}`}
-                className="overflow-hidden rounded-3xl border border-cream-dark bg-cream hover:border-sage/40"
+                className="overflow-hidden rounded-lg border border-champagne bg-paper transition-colors hover:border-taupe"
               >
                 {imageSrc ? (
                   <span className="relative block aspect-[16/10]">
@@ -52,8 +52,8 @@ export default async function HomePage() {
                   </span>
                 ) : null}
                 <span className="block p-6">
-                  <h3 className="font-serif text-2xl text-sage-dark">{service.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
+                  <h3 className="font-serif text-2xl text-espresso">{service.name}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{service.summary}</p>
                 </span>
               </Link>
               );
@@ -62,38 +62,46 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-2">
         <div>
-          <h2 className="font-serif text-3xl text-sage-dark">Hekim</h2>
-          <Prose text={clinic.aboutShort} className="mt-4" />
-          <Link href="/hakkimizda" className="mt-6 inline-block text-sage-dark underline">
+          <h2 className="font-serif text-3xl text-espresso">Hekim</h2>
+          <Prose text={clinic.aboutShort} className="mt-5" />
+          <Link href="/hakkimizda" className="mt-8 inline-block text-espresso underline decoration-champagne underline-offset-4">
             Kliniği tanı
           </Link>
         </div>
-        <div className="rounded-3xl bg-sage-light/40 p-8">
-          <h2 className="font-serif text-3xl text-sage-dark">Çalışma saatleri</h2>
-          <dl className="mt-5 space-y-2 text-sm">
+        <div className="rounded-lg border border-champagne bg-paper p-8">
+          <h2 className="font-serif text-3xl text-espresso">Çalışma saatleri</h2>
+          <dl className="mt-6 space-y-2 text-sm">
             {hours.map((row) => (
-              <div key={row.weekday} className="flex justify-between gap-4 border-b border-sage/15 py-1">
+              <div key={row.weekday} className="flex justify-between gap-4 border-b border-champagne/70 py-1.5">
                 <dt>{weekdayLabel(row.weekday)}</dt>
-                <dd>{row.closed ? "Kapalı" : `${row.startTime}–${row.endTime}`}</dd>
+                <dd className="text-muted">{row.closed ? "Kapalı" : `${row.startTime}–${row.endTime}`}</dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <h2 className="font-serif text-3xl text-sage-dark">Klinik</h2>
-        <p className="mt-2 max-w-2xl text-ink-soft">{clinic.address}</p>
-        <div className="mt-6">
+      <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+        <h2 className="font-serif text-3xl text-espresso">Klinik</h2>
+        <p className="mt-3 max-w-2xl text-muted">{clinic.address}</p>
+        <div className="mt-8">
           <ClinicGallery />
         </div>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a href={clinic.mapsUrl} target="_blank" rel="noreferrer" className="rounded-full bg-sage px-5 py-2 text-white">
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a
+            href={clinic.mapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-md bg-burgundy px-5 py-2.5 text-ivory transition-colors hover:bg-champagne hover:text-espresso"
+          >
             Haritada aç
           </a>
-          <Link href="/iletisim" className="rounded-full border border-sage px-5 py-2 text-sage-dark">
+          <Link
+            href="/iletisim"
+            className="rounded-md border border-champagne px-5 py-2.5 text-espresso transition-colors hover:border-taupe hover:bg-champagne/40"
+          >
             İletişim
           </Link>
         </div>

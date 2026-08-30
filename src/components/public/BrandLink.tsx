@@ -14,7 +14,6 @@ export function BrandLink({
   variant?: "header" | "footer";
 }) {
   const hasLogo = publicImageExists(LOGO);
-  const inverted = variant === "footer";
 
   return (
     <Link href="/" className="flex min-w-0 items-center gap-3">
@@ -24,20 +23,20 @@ export function BrandLink({
           alt=""
           width={286}
           height={271}
-          className={`h-10 w-auto shrink-0 sm:h-11 ${inverted ? "brightness-0 invert" : ""}`}
+          className="h-10 w-auto shrink-0 brightness-0 invert sm:h-11"
           sizes="44px"
           priority={variant === "header"}
         />
       ) : null}
       <span className="min-w-0">
         {variant === "footer" ? (
-          <span className="block font-serif text-2xl leading-none text-white">{clinic.clinicName}</span>
+          <span className="block font-serif text-2xl leading-none text-ivory">{clinic.clinicName}</span>
         ) : (
           <>
-            <span className="block font-serif text-xl leading-none text-sage-dark sm:text-2xl">
+            <span className="block font-serif text-xl leading-none text-ivory sm:text-2xl">
               {clinic.doctorName}
             </span>
-            <span className="mt-0.5 block text-[11px] uppercase tracking-[0.18em] text-ink-soft">
+            <span className="mt-0.5 block text-[11px] uppercase tracking-[0.18em] text-champagne">
               Diş hekimi · Bayraklı
             </span>
           </>

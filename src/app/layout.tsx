@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { getClinicSettings } from "@/lib/clinic";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -31,8 +31,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="tr" className={`${outfit.variable} ${cormorant.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-cream text-ink">{children}</body>
+    <html lang="tr" className={`${dmSans.variable} ${cormorant.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-ivory text-espresso">{children}</body>
     </html>
   );
 }

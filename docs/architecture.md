@@ -82,7 +82,7 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Medya ve sosyal
 
-- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: işlenmemiş `doctor/hero.jpg`; hero zemini her genişlikte siyah, metin onun üstünde)
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: yatay aynalanmış `doctor/hero.jpg`, bakış metne doğru; espresso zemin, sağda B&W lup portresi)
 - Logo işareti `public/images/brand/logo.png` — header’da mevcut isim yazısının solunda; footer’da klinik adının solunda; sekme ikonu `src/app/icon.png`
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
@@ -90,7 +90,20 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Tasarım
 
-Sıcak krem zemin, sage/teal vurgu, serif başlık + sans gövde. Anasayfa hero her genişlikte siyah zemin + krem metin, sağda işlenmemiş lup portresi; diğer sayfalar krem/sage. Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
+Lüks butik muayenehane: az süs, ince champagne/taupe çizgiler, hafif köşe, gölgesiz. Sage/yeşil yok.
+
+Palette (`src/app/globals.css` `@theme`):
+- Fildişi / krem zemin `#F5F0E8` (`ivory`, `paper`)
+- Champagne `#D8C7B0` ve taupe `#9A8C7C` — kenarlık ve ayrıntı
+- Espresso `#29231F` — gövde metni ve koyu yüzeyler (header, hero, footer)
+- Burgundy `#6E3B3B` — birincil düğmeler (hover champagne/taupe)
+- Muted rose `#B89A91` — seyrek vurgu
+
+Tipografi: Cormorant Garamond (serif başlık) + DM Sans (gövde ve nav), `next/font` ile `layout.tsx`.
+
+Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda yatay aynalanmış B&W portre (`object-contain`, yüz kırpılmaz). Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
+
+Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
 
 ## Bilinçli dışı
 

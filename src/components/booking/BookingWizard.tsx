@@ -70,15 +70,18 @@ export function BookingWizard() {
 
   if (state?.ok) {
     return (
-      <div className="rounded-3xl bg-paper p-8 shadow-sm ring-1 ring-cream-dark">
-        <p className="text-sm uppercase tracking-widest text-gold">Randevu alındı</p>
-        <h2 className="mt-2 font-serif text-3xl text-sage-dark">Sizi takvime yazdık.</h2>
-        <p className="mt-4 text-ink-soft">
+      <div className="rounded-lg border border-champagne bg-paper p-8">
+        <p className="text-xs uppercase tracking-[0.2em] text-taupe">Randevu alındı</p>
+        <h2 className="mt-3 font-serif text-3xl text-espresso">Sizi takvime yazdık.</h2>
+        <p className="mt-4 text-muted">
           Seçtiğiniz saat kaydedildi. Kliniğe gelirken kimliğinizi yanınızda bulundurun. Yazmak veya aramak için sağ
           alttaki düğmeleri kullanabilirsiniz.
         </p>
         <div className="mt-6">
-          <Link href="/" className="rounded-full bg-sage px-5 py-2 text-white hover:bg-sage-dark">
+          <Link
+            href="/"
+            className="rounded-md bg-burgundy px-5 py-2.5 text-ivory transition-colors hover:bg-champagne hover:text-espresso"
+          >
             Anasayfa
           </Link>
         </div>
@@ -87,9 +90,9 @@ export function BookingWizard() {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <form action={formAction} className="space-y-3 rounded-3xl bg-paper p-5 ring-1 ring-cream-dark">
-          <h2 className="font-serif text-2xl">1. Bilgileriniz</h2>
+    <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <form action={formAction} className="space-y-3 rounded-lg border border-champagne bg-paper p-5">
+          <h2 className="font-serif text-2xl text-espresso">1. Bilgileriniz</h2>
           <input type="hidden" name="startAt" value={selectedSlot?.startAt ?? ""} />
           <label className="block text-sm">
             Ad soyad
@@ -99,7 +102,7 @@ export function BookingWizard() {
               autoComplete="name"
               value={patientName}
               onChange={(event) => setPatientName(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+              className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
             />
           </label>
           <label className="block text-sm">
@@ -111,7 +114,7 @@ export function BookingWizard() {
               autoComplete="tel"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+              className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
             />
           </label>
           <label className="block text-sm">
@@ -122,7 +125,7 @@ export function BookingWizard() {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+              className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
             />
           </label>
           <label className="block text-sm">
@@ -132,10 +135,10 @@ export function BookingWizard() {
               rows={3}
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
-              className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+              className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
             />
           </label>
-          <label className="flex items-start gap-2 text-sm text-ink-soft">
+          <label className="flex items-start gap-2 text-sm text-muted">
             <input
               type="checkbox"
               name="kvkk"
@@ -145,24 +148,24 @@ export function BookingWizard() {
               onChange={(event) => setKvkk(event.target.checked)}
             />
             <span>
-              <Link href="/kvkk" className="underline">
+              <Link href="/kvkk" className="underline decoration-champagne underline-offset-4">
                 KVKK aydınlatma metnini
               </Link>{" "}
               okudum, kişisel verilerimin randevu için işlenmesini kabul ediyorum.
             </span>
           </label>
-          {state && !state.ok ? <p className="text-sm text-red-800">{state.error}</p> : null}
+          {state && !state.ok ? <p className="text-sm text-burgundy">{state.error}</p> : null}
           {!selectedSlot ? (
-            <p className="text-sm text-ink-soft">Randevuyu tamamlamak için takvimden bir saat seçin.</p>
+            <p className="text-sm text-muted">Randevuyu tamamlamak için takvimden bir saat seçin.</p>
           ) : (
-            <p className="text-sm text-sage-dark">
+            <p className="text-sm text-espresso">
               Seçilen saat: {selectedDay ? formatDateLong(selectedDay) : ""} {selectedSlot.label}
             </p>
           )}
           <button
             type="submit"
             disabled={!selectedSlot || bookingPending}
-            className="w-full rounded-full bg-sage py-3 font-medium text-white hover:bg-sage-dark disabled:opacity-50"
+            className="w-full rounded-md bg-burgundy py-3 font-medium text-ivory transition-colors hover:bg-champagne hover:text-espresso disabled:opacity-50"
           >
             {bookingPending ? "Kaydediliyor…" : "Randevuyu onayla"}
           </button>
@@ -170,19 +173,19 @@ export function BookingWizard() {
 
         <section className="space-y-6">
           <div>
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="font-serif text-2xl">2. Uygun saat</h2>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <h2 className="font-serif text-2xl text-espresso">2. Uygun saat</h2>
               <div className="flex gap-2">
-                <button type="button" className="rounded-full border border-cream-dark px-3 py-1" onClick={() => shiftMonth(-1)}>
+                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(-1)}>
                   ‹
                 </button>
                 <span className="min-w-40 text-center capitalize">{monthLabel}</span>
-                <button type="button" className="rounded-full border border-cream-dark px-3 py-1" onClick={() => shiftMonth(1)}>
+                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(1)}>
                   ›
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs text-ink-soft">
+            <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted">
               {WEEKDAYS.map((label) => (
                 <div key={label} className="py-1">
                   {label}
@@ -202,12 +205,12 @@ export function BookingWizard() {
                       setSelectedSlot(null);
                       setSlots([]);
                     }}
-                    className={`rounded-xl py-2 text-sm ${
+                    className={`rounded-md py-2 text-sm ${
                       selected
-                        ? "bg-sage text-white"
+                        ? "bg-burgundy text-ivory"
                         : available
-                          ? "bg-paper hover:bg-sage-light"
-                          : "cursor-not-allowed text-ink-soft/30"
+                          ? "bg-paper hover:bg-champagne/50"
+                          : "cursor-not-allowed text-muted/30"
                     }`}
                   >
                     {Number(ymd.slice(-2))}
@@ -215,15 +218,15 @@ export function BookingWizard() {
                 );
               })}
             </div>
-            {loadingCalendar ? <p className="mt-2 text-sm text-ink-soft">Müsait günler yükleniyor…</p> : null}
+            {loadingCalendar ? <p className="mt-2 text-sm text-muted">Müsait günler yükleniyor…</p> : null}
           </div>
 
           <div>
-            <h3 className="font-serif text-xl">Saat seçin</h3>
+            <h3 className="font-serif text-xl text-espresso">Saat seçin</h3>
             {!selectedDay ? (
-              <p className="mt-2 text-sm text-ink-soft">Önce bir gün seçin.</p>
+              <p className="mt-2 text-sm text-muted">Önce bir gün seçin.</p>
             ) : slots.length === 0 && !loadingCalendar ? (
-              <p className="mt-2 text-sm text-ink-soft">{formatDateLong(selectedDay)} için müsait saat yok.</p>
+              <p className="mt-2 text-sm text-muted">{formatDateLong(selectedDay)} için müsait saat yok.</p>
             ) : (
               <div className="mt-3 flex flex-wrap gap-2">
                 {slots.map((slot) => (
@@ -231,10 +234,10 @@ export function BookingWizard() {
                     key={slot.startAt}
                     type="button"
                     onClick={() => setSelectedSlot(slot)}
-                    className={`rounded-full px-4 py-2 text-sm ${
+                    className={`rounded-md px-4 py-2 text-sm ${
                       selectedSlot?.startAt === slot.startAt
-                        ? "bg-sage text-white"
-                        : "bg-paper ring-1 ring-cream-dark hover:ring-sage"
+                        ? "bg-burgundy text-ivory"
+                        : "border border-champagne bg-paper hover:border-taupe"
                     }`}
                   >
                     {slot.label}

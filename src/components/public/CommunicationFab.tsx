@@ -20,7 +20,7 @@ export function CommunicationFab({
       {tel ? (
         <a
           href={tel}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-sage text-white shadow-lg hover:scale-105 hover:bg-sage-dark"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-burgundy text-ivory transition-colors hover:bg-champagne hover:text-espresso"
           aria-label={`Ara ${phone}`}
         >
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden>
@@ -33,7 +33,7 @@ export function CommunicationFab({
           href={ig}
           target="_blank"
           rel="noreferrer"
-          className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg hover:scale-105"
+          className="flex h-14 w-14 items-center justify-center rounded-full text-white"
           style={{
             background:
               "radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285aeb 90%)",
@@ -50,7 +50,7 @@ export function CommunicationFab({
           href={wa}
           target="_blank"
           rel="noreferrer"
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:scale-105"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white"
           aria-label="WhatsApp ile yazın"
         >
           <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden>

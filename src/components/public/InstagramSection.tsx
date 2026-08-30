@@ -20,12 +20,12 @@ export function InstagramSection({ instagramUrl }: { instagramUrl: string }) {
   }, []);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr]">
+    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+      <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr]">
         <div>
-          <p className="text-sm uppercase tracking-widest text-gold">Instagram</p>
-          <h2 className="mt-1 font-serif text-3xl text-sage-dark sm:text-4xl">Tedavi sonuçları @ {INSTAGRAM_HANDLE}</h2>
-          <p className="mt-4 leading-relaxed text-ink-soft">
+          <p className="text-xs uppercase tracking-[0.2em] text-taupe">Instagram</p>
+          <h2 className="mt-2 font-serif text-3xl text-espresso sm:text-4xl">Tedavi sonuçları @ {INSTAGRAM_HANDLE}</h2>
+          <p className="mt-5 leading-relaxed text-muted">
             Before-after fotoğrafları ve klinik paylaşımları Instagram hesabımızda yer alır. Siteye gelen ziyaretçiler
             buradan doğrudan profile ulaşabilir, gülüş tasarımı ve restorasyon örneklerini görebilir.
           </p>
@@ -33,19 +33,19 @@ export function InstagramSection({ instagramUrl }: { instagramUrl: string }) {
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="mt-6 inline-flex rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark"
+            className="mt-8 inline-flex rounded-md bg-burgundy px-6 py-3 text-ivory transition-colors hover:bg-champagne hover:text-espresso"
           >
             Instagram’daki before-after paylaşımlarını görün
           </a>
         </div>
-        <div className="overflow-hidden rounded-3xl bg-paper ring-1 ring-cream-dark">
+        <div className="overflow-hidden rounded-lg border border-champagne bg-paper">
           <blockquote
             className="instagram-media w-full"
             data-instgrm-permalink={href}
             data-instgrm-version="14"
             style={{ margin: 0, maxWidth: "100%" }}
           >
-            <a href={href} target="_blank" rel="noreferrer" className="block p-6 text-sage-dark underline">
+            <a href={href} target="_blank" rel="noreferrer" className="block p-6 text-espresso underline decoration-champagne underline-offset-4">
               @{INSTAGRAM_HANDLE} profilini aç
             </a>
           </blockquote>
