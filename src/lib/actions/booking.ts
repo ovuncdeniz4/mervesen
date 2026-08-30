@@ -13,6 +13,7 @@ import {
   type SlotDto,
 } from "@/lib/availability";
 import { addDaysYmd, todayYmd, weekdayFromYmd, ymdInIstanbul } from "@/lib/dates";
+import { notifyNewAppointment } from "@/lib/notify";
 
 const PUBLIC_BOOKING_SERVICE_SLUG = "genel-muayene";
 
@@ -134,7 +135,7 @@ export async function bookAppointment(_prev: BookingState | null, formData: Form
   }
 
   try {
-    const id = await prisma.$transaction(async (tx) => {
+    const created = await prisma.$transaction(async (tx) => {
       const service =
         (await tx.service.findFirst({ where: { slug: PUBLIC_BOOKING_SERVICE_SLUG, published: true } })) ??
         (await tx.service.findFirst({ where: { published: true }, orderBy: { sortOrder: "asc" } }));
@@ -189,14 +190,21 @@ export async function bookAppointment(_prev: BookingState | null, formData: Form
           status: "CONFIRMED",
         },
       });
-      return created.id;
+      return created;
     });
 
     revalidatePath("/randevu");
     revalidatePath("/admin");
     revalidatePath("/admin/takvim");
     revalidatePath("/admin/randevular");
-    return { ok: true, id };
+    await notifyNewAppointment({
+      startAt: created.startAt,
+      patientName: created.patientName,
+      phone: created.phone,
+      email: created.email,
+      notes: created.notes,
+    });
+    return { ok: true, id: created.id };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Randevu kaydedilemedi.";
     return { ok: false, error: message };
