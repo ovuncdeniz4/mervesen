@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { getClinicSettings, telLink, whatsappLink } from "@/lib/clinic";
+import { getClinicSettings } from "@/lib/clinic";
 import { PublicShell } from "@/components/public/PublicShell";
 import { ClinicGallery, DoctorPortraits } from "@/components/public/ClinicGallery";
 import { aboutPage } from "@/lib/content/about";
@@ -10,8 +10,6 @@ export const metadata: Metadata = { title: "Hakkımızda" };
 
 export default async function AboutPage() {
   const clinic = await getClinicSettings();
-  const tel = telLink(clinic.phone);
-  const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
 
   return (
     <PublicShell clinic={clinic}>
@@ -53,18 +51,6 @@ export default async function AboutPage() {
           <p className="mt-2 text-ink-soft">{clinic.address}</p>
           <div className="mt-6">
             <ClinicGallery />
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {wa ? (
-              <a href={wa} target="_blank" rel="noreferrer" className="rounded-full bg-[#25D366] px-5 py-2 text-white">
-                WhatsApp
-              </a>
-            ) : null}
-            {tel ? (
-              <a href={tel} className="rounded-full border border-sage px-5 py-2 text-sage-dark">
-                Ara · {clinic.phone}
-              </a>
-            ) : null}
           </div>
         </section>
       </article>

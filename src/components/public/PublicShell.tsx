@@ -1,7 +1,7 @@
 import type { ClinicSettings } from "@prisma/client";
 import { Header } from "@/components/public/Header";
 import { Footer } from "@/components/public/Footer";
-import { WhatsAppButton } from "@/components/public/WhatsAppButton";
+import { CommunicationFab } from "@/components/public/CommunicationFab";
 
 export function PublicShell({
   clinic,
@@ -13,9 +13,9 @@ export function PublicShell({
   return (
     <>
       <Header clinic={clinic} />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-24">{children}</main>
       <Footer clinic={clinic} />
-      <WhatsAppButton whatsapp={clinic.whatsapp} />
+      <CommunicationFab whatsapp={clinic.whatsapp} phone={clinic.phone} />
     </>
   );
 }

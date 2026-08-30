@@ -8,15 +8,7 @@ import type { SlotDto } from "@/lib/availability";
 
 const WEEKDAYS = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
 
-export function BookingWizard({
-  whatsappHref,
-  phoneHref,
-  phoneLabel,
-}: {
-  whatsappHref: string | null;
-  phoneHref: string | null;
-  phoneLabel: string;
-}) {
+export function BookingWizard() {
   const today = todayYmd();
   const initial = splitYmd(today);
   const [year, setYear] = useState(initial.year);
@@ -82,54 +74,20 @@ export function BookingWizard({
         <p className="text-sm uppercase tracking-widest text-gold">Randevu alındı</p>
         <h2 className="mt-2 font-serif text-3xl text-sage-dark">Sizi takvime yazdık.</h2>
         <p className="mt-4 text-ink-soft">
-          Seçtiğiniz saat kaydedildi. Kliniğe gelirken kimliğinizi yanınızda bulundurun. Dilerseniz WhatsApp veya
-          telefonla da bize ulaşabilirsiniz.
+          Seçtiğiniz saat kaydedildi. Kliniğe gelirken kimliğinizi yanınızda bulundurun. Yazmak veya aramak için sağ
+          alttaki düğmeleri kullanabilirsiniz.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6">
           <Link href="/" className="rounded-full bg-sage px-5 py-2 text-white hover:bg-sage-dark">
             Anasayfa
           </Link>
-          {whatsappHref ? (
-            <a
-              href={whatsappHref}
-              className="rounded-full bg-[#25D366] px-5 py-2 text-white"
-              target="_blank"
-              rel="noreferrer"
-            >
-              WhatsApp ile yaz
-            </a>
-          ) : null}
-          {phoneHref ? (
-            <a href={phoneHref} className="rounded-full border border-sage px-5 py-2 text-sage-dark">
-              Ara · {phoneLabel}
-            </a>
-          ) : null}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-3">
-        {whatsappHref ? (
-          <a
-            href={whatsappHref}
-            className="rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white"
-            target="_blank"
-            rel="noreferrer"
-          >
-            WhatsApp ile yazın
-          </a>
-        ) : null}
-        {phoneHref ? (
-          <a href={phoneHref} className="rounded-full border border-sage px-5 py-2.5 text-sm font-medium text-sage-dark">
-            Ara · {phoneLabel}
-          </a>
-        ) : null}
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <form action={formAction} className="space-y-3 rounded-3xl bg-paper p-5 ring-1 ring-cream-dark">
           <h2 className="font-serif text-2xl">1. Bilgileriniz</h2>
           <input type="hidden" name="startAt" value={selectedSlot?.startAt ?? ""} />
@@ -286,7 +244,6 @@ export function BookingWizard({
             )}
           </div>
         </section>
-      </div>
     </div>
   );
 }

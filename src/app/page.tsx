@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getClinicSettings, getPublishedServices, getWorkingHours, telLink, whatsappLink } from "@/lib/clinic";
+import { getClinicSettings, getPublishedServices, getWorkingHours } from "@/lib/clinic";
 import { PublicShell, Prose } from "@/components/public/PublicShell";
 import { LocalBusinessJsonLd } from "@/components/public/LocalBusinessJsonLd";
 import { GoogleReviews } from "@/components/public/GoogleReviews";
@@ -16,8 +16,6 @@ export default async function HomePage() {
     getWorkingHours(),
   ]);
   const featured = services.filter((item) => item.featured).slice(0, 6);
-  const tel = telLink(clinic.phone);
-  const wa = whatsappLink(clinic.whatsapp, "Merhaba, randevu için yazıyorum.");
   const heroPortrait = publicImageExists("/images/doctor/portrait-1.jpg");
 
   return (
@@ -35,21 +33,9 @@ export default async function HomePage() {
               <Link href="/randevu" className="rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
                 Randevu al
               </Link>
-              {wa ? (
-                <a
-                  href={wa}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full bg-[#25D366] px-6 py-3 text-white"
-                >
-                  WhatsApp
-                </a>
-              ) : null}
-              {tel ? (
-                <a href={tel} className="rounded-full border border-sage/40 px-6 py-3 text-sage-dark">
-                  Ara · {clinic.phone}
-                </a>
-              ) : null}
+              <Link href="/iletisim" className="rounded-full border border-sage/40 px-6 py-3 text-sage-dark">
+                İletişim
+              </Link>
             </div>
           </div>
           <div className="relative overflow-hidden rounded-[2rem] bg-sage-dark shadow-xl">

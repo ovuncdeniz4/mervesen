@@ -53,7 +53,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 
 Hasta yüzünde tedavi süresi gösterilmez; süre kişiden kişiye değişir. `Service.durationMin` yalnızca admin manuel randevuda kullanılır.
 
-WhatsApp ve telefon `ClinicSettings` üzerinden gelir (0554 993 01 23). Yüzen WhatsApp, header, randevu ve iletişimde mesaj/arama bağlantısı vardır.
+WhatsApp ve telefon `ClinicSettings` üzerinden gelir (0554 993 01 23). Yazma ve arama yalnızca sağ alttaki FAB düğmelerindedir.
 
 Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot tekrar açılır. Admin manuel randevuda hizmet seçebilir.
 

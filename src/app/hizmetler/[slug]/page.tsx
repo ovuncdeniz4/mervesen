@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getClinicSettings, telLink, whatsappLink } from "@/lib/clinic";
+import { getClinicSettings } from "@/lib/clinic";
 import { PublicShell, Prose } from "@/components/public/PublicShell";
 import { serviceImageSrc } from "@/lib/public-image";
 
@@ -29,8 +29,6 @@ export default async function ServiceDetailPage({
     prisma.service.findFirst({ where: { slug, published: true } }),
   ]);
   if (!service) notFound();
-  const wa = whatsappLink(clinic.whatsapp, `Merhaba, ${service.name} hakkında bilgi almak istiyorum.`);
-  const tel = telLink(clinic.phone);
   const imageSrc = serviceImageSrc(service.slug, service.imagePath);
 
   return (
@@ -53,21 +51,9 @@ export default async function ServiceDetailPage({
         ) : null}
         <h1 className="mt-6 font-serif text-4xl text-sage-dark sm:text-5xl">{service.name}</h1>
         <Prose text={service.content} className="mt-8" />
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/randevu" className="rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
-            Randevu al
-          </Link>
-          {wa ? (
-            <a href={wa} target="_blank" rel="noreferrer" className="rounded-full bg-[#25D366] px-6 py-3 text-white">
-              WhatsApp
-            </a>
-          ) : null}
-          {tel ? (
-            <a href={tel} className="rounded-full border border-sage px-6 py-3 text-sage-dark">
-              Ara · {clinic.phone}
-            </a>
-          ) : null}
-        </div>
+        <Link href="/randevu" className="mt-10 inline-block rounded-full bg-sage px-6 py-3 text-white hover:bg-sage-dark">
+          Randevu al
+        </Link>
       </article>
     </PublicShell>
   );
