@@ -15,7 +15,7 @@ export function PublicShell({
       <Header clinic={clinic} />
       <main className="flex-1 pb-24">{children}</main>
       <Footer clinic={clinic} />
-      <CommunicationFab whatsapp={clinic.whatsapp} phone={clinic.phone} />
+      <CommunicationFab whatsapp={clinic.whatsapp} phone={clinic.phone} instagram={clinic.instagramUrl} />
     </>
   );
 }

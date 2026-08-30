@@ -53,7 +53,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 
 Hasta yüzünde tedavi süresi gösterilmez; süre kişiden kişiye değişir. `Service.durationMin` yalnızca admin manuel randevuda kullanılır.
 
-WhatsApp ve telefon `ClinicSettings` üzerinden gelir (0554 993 01 23). Yazma ve arama yalnızca sağ alttaki FAB düğmelerindedir.
+WhatsApp, telefon ve Instagram `ClinicSettings` üzerinden gelir. Yazma, arama ve Instagram yalnızca sağ alttaki FAB düğmelerindedir.
 
 Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot tekrar açılır. Admin manuel randevuda hizmet seçebilir.
 
@@ -82,7 +82,7 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Medya ve sosyal
 
-- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: `doctor/hero.jpg` + sola uzatılmış `doctor/hero-wide.jpg`)
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: orijinal `doctor/hero.jpg`, işlenmemiş)
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
 - Google yorumları: sitede 5.0 / 42 özeti ve Maps’ten alınan özgün yorumlar; tam liste Google Haritalar’da
