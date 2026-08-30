@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model ClinicSettings {
+  id              String @id @default("default")
+  clinicName      String
+  doctorName      String
+  phone           String
+  whatsapp        String
+  email           String
+  address         String
+  mapsUrl         String
+  mapsEmbedUrl    String
+  tagline         String
+  aboutShort      String
+  aboutLong       String
+  doctorBio       String
+  instagramUrl    String @default("https://www.instagram.com/dtmervesen/")
+  minNoticeHours  Int    @default(2)
+  maxAdvanceDays  Int    @default(60)
+  slotIntervalMin Int    @default(30)
+}
+
+model Service {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  name         String
+  summary      String
+  content      String
+  durationMin  Int
+  imagePath    String        @default("")
+  sortOrder    Int           @default(0)
+  published    Boolean       @default(true)
+  featured     Boolean       @default(false)
+  appointments Appointment[]
+}
+
+model WorkingHours {
+  id         String  @id @default(cuid())
+  weekday    Int     @unique
+  startTime  String
+  endTime    String
+  breakStart String?
+  breakEnd   String?
+  closed     Boolean @default(false)
+}
+
+model BlockedSlot {
+  id        String   @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime
+  reason    String
+  createdAt DateTime @default(now())
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  serviceId   String
+  service     Service  @relation(fields: [serviceId], references: [id])
+  startAt     DateTime
+  endAt       DateTime
+  patientName String
+  phone       String
+  email       String?
+  notes       String?
+  kvkkConsent Boolean
+  status      String   @default("CONFIRMED")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ivory: #f5f0e8;
+  --color-paper: #faf7f1;
+  --color-champagne: #d8c7b0;
+  --color-taupe: #9a8c7c;
+  --color-espresso: #29231f;
+  --color-muted: #6b6058;
+  --color-burgundy: #6e3b3b;
+  --color-rose: #b89a91;
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-cormorant);
+
+  /* Admin and any leftover public classes map onto the luxury palette (no sage). */
+  --color-cream: var(--color-ivory);
+  --color-cream-dark: var(--color-champagne);
+  --color-ink: var(--color-espresso);
+  --color-ink-soft: var(--color-muted);
+  --color-sage: var(--color-burgundy);
+  --color-sage-dark: var(--color-espresso);
+  --color-sage-light: var(--color-rose);
+  --color-gold: var(--color-taupe);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-espresso);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--color-champagne);
+  color: var(--color-espresso);
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
