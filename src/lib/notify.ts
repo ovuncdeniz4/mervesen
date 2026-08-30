@@ -4,20 +4,43 @@ import { formatDateTime } from "@/lib/dates";
 
 export type NotifyResult = { ok: true; to: string } | { ok: false; error: string };
 
+/** Domain doğrulanmadan tek izinli gönderen. example.com Resend’de çalışmaz. */
+const RESEND_SANDBOX_FROM = "Dt. Merve Şen Aşkar <beth.t@example.com>";
+const PLACEHOLDER_FROM_DOMAINS = new Set(["example.com", "your-domain.com", "localhost"]);
+
+function emailFromHeader(from: string): string {
+  const angled = from.match(/<([^>]+)>/);
+  return (angled?.[1] ?? from).trim().toLowerCase();
+}
+
+function domainFromHeader(from: string): string {
+  return emailFromHeader(from).split("@")[1] ?? "";
+}
+
+function resolveFrom(): string {
+  const raw = process.env.NOTIFY_FROM?.trim();
+  if (!raw) return RESEND_SANDBOX_FROM;
+  const domain = domainFromHeader(raw);
+  if (!domain || PLACEHOLDER_FROM_DOMAINS.has(domain)) {
+    console.warn("NOTIFY_FROM placeholder/example.com yok sayıldı; onboarding@resend.dev kullanılıyor.");
+    return RESEND_SANDBOX_FROM;
+  }
+  return raw;
+}
+
 function notifyConfig(): { apiKey: string; to: string; from: string } | { error: string } {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const to = process.env.NOTIFY_EMAIL?.trim();
   if (!apiKey) {
     return { error: "RESEND_API_KEY Vercel’de yok. Env ekledikten sonra Redeploy şart." };
   }
-  if (!to || !to.includes("@") || to.endsWith(".local")) {
+  if (!to || !to.includes("@") || to.endsWith(".local") || to.toLowerCase().endsWith("@example.com")) {
     return {
       error:
-        "NOTIFY_EMAIL gerçek bir gelen kutusu olmalı. ADMIN_EMAIL (.local) mail düşmez. Resend hesabınızın e-postası ile aynı olmalı.",
+        "NOTIFY_EMAIL gerçek bir gelen kutusu olmalı (you@example.com değil). ADMIN_EMAIL (.local) mail düşmez. Resend hesabınızın e-postası ile aynı olmalı.",
     };
   }
-  const from = process.env.NOTIFY_FROM?.trim() || "Diş Hekimi Merve Şen Aşkar <beth.t@example.com>";
-  return { apiKey, to, from };
+  return { apiKey, to, from: resolveFrom() };
 }
 
 function escapeHtml(value: string): string {
@@ -28,12 +51,30 @@ function escapeHtml(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
-async function sendEmail(subject: string, text: string, html: string): Promise<NotifyResult> {
-  const config = notifyConfig();
-  if ("error" in config) {
-    console.error("Bildirim atlandı:", config.error);
-    return { ok: false, error: config.error };
+function isUnverifiedDomainError(message: string): boolean {
+  return /domain is not verified|verify your domain|resend\.com\/domains/i.test(message);
+}
+
+function friendlyResendError(message: string): string {
+  if (/example\.com domain is not verified/i.test(message)) {
+    return "Gönderen example.com olamaz. Vercel’de NOTIFY_FROM varsa silin ve Redeploy edin. Alan adı eklemeniz gerekmez.";
   }
+  if (isUnverifiedDomainError(message)) {
+    return "NOTIFY_FROM Resend’de doğrulanmamış. Vercel’de NOTIFY_FROM’u silin; kod beth.t@example.com kullanır. Kendi alan adınızı ancak resend.com/domains’de doğruladıktan sonra yazın.";
+  }
+  if (/only send testing emails to your own email/i.test(message)) {
+    return "Resend ücretsiz planda mail yalnızca hesap e-postanıza gider. NOTIFY_EMAIL’i Resend’e kayıt olduğunuz adres yapın.";
+  }
+  return message;
+}
+
+async function postResend(
+  config: { apiKey: string; to: string },
+  from: string,
+  subject: string,
+  text: string,
+  html: string,
+): Promise<{ ok: boolean; status: number; body: string }> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -41,24 +82,41 @@ async function sendEmail(subject: string, text: string, html: string): Promise<N
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: config.from,
+      from,
       to: [config.to],
       subject,
       text,
       html,
     }),
   });
-  if (!response.ok) {
-    const body = await response.text();
-    console.error("E-posta bildirimi gönderilemedi.", response.status, body);
-    let detail = `Resend ${response.status}`;
+  return { ok: response.ok, status: response.status, body: await response.text() };
+}
+
+async function sendEmail(subject: string, text: string, html: string): Promise<NotifyResult> {
+  const config = notifyConfig();
+  if ("error" in config) {
+    console.error("Bildirim atlandı:", config.error);
+    return { ok: false, error: config.error };
+  }
+
+  let from = config.from;
+  let result = await postResend(config, from, subject, text, html);
+  if (!result.ok && isUnverifiedDomainError(result.body) && domainFromHeader(from) !== "resend.dev") {
+    console.warn("NOTIFY_FROM doğrulanmamış, onboarding@resend.dev ile yeniden deneniyor.");
+    from = RESEND_SANDBOX_FROM;
+    result = await postResend(config, from, subject, text, html);
+  }
+
+  if (!result.ok) {
+    console.error("E-posta bildirimi gönderilemedi.", result.status, result.body);
+    let detail = `Resend ${result.status}`;
     try {
-      const parsed = JSON.parse(body) as { message?: string };
+      const parsed = JSON.parse(result.body) as { message?: string };
       if (parsed.message) detail = parsed.message;
     } catch {
-      if (body) detail = body.slice(0, 280);
+      if (result.body) detail = result.body.slice(0, 280);
     }
-    return { ok: false, error: detail };
+    return { ok: false, error: friendlyResendError(detail) };
   }
   return { ok: true, to: config.to };
 }

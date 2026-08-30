@@ -12,8 +12,10 @@ export function TestNotifyForm() {
       <h2 className="font-serif text-xl text-sage-dark">Randevu e-postası</h2>
       <p className="mt-2 text-sm text-ink-soft">
         Yalnızca API anahtarı yetmez. Vercel’de <code className="text-ink">RESEND_API_KEY</code> ve gerçek bir{" "}
-        <code className="text-ink">NOTIFY_EMAIL</code> olmalı; env değişince Redeploy şart. Resend ücretsiz planda
-        mail yalnızca hesabın kendi e-postasına gider.
+        <code className="text-ink">NOTIFY_EMAIL</code> (Resend hesap e-postanız) olmalı.{" "}
+        <code className="text-ink">NOTIFY_FROM</code> şimdilik koymayın — <code className="text-ink">example.com</code>{" "}
+        gönderen çalışmaz; kod <code className="text-ink">beth.t@example.com</code> kullanır. Env değişince Redeploy
+        şart.
       </p>
       <form action={action} className="mt-4">
         <button
