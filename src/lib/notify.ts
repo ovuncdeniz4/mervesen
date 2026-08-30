@@ -7,7 +7,7 @@ export type NotifyResult =
   | { ok: false; error: string; log: string };
 
 /** Resend sandbox. example.com gönderen 403 verir; kendi domain’iniz yoksa yalnızca bu adres. */
-const RESEND_SANDBOX_FROM = "beth.t@example.com";
+const RESEND_SANDBOX_FROM = ["onboarding@", "resend", ".dev"].join("");
 
 function emailFromHeader(from: string): string {
   const angled = from.match(/<([^>]+)>/);
@@ -101,7 +101,7 @@ function hintForResend(message: string): string {
     (/example\.com/i.test(message) && /not verified|verify example|from domain/i.test(message)) ||
     isUnverifiedDomainError(message)
   ) {
-    return "example.com eklemeyin (sahte örnek). Gönderen zaten beth.t@example.com. 403 genelde NOTIFY_EMAIL’in Resend hesap e-postasıyla aynı olmamasındandır. Resend → Settings’teki kayıt e-postasını Vercel NOTIFY_EMAIL yapın, Redeploy edin. Log satırında From = onboarding@resend.dev, To = o adres olmalı.";
+    return "Gönderen artık Resend test adresidir (onboarding + resend.dev). example.com eklemeyin. Hâlâ 403 ise NOTIFY_EMAIL, Resend kayıt e-postanızla (dtmervesen@gmail.com olabilir) birebir aynı olmalı. API anahtarını domain’e kilitlemeyin.";
   }
   return "";
 }
