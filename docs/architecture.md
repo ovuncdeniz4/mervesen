@@ -50,7 +50,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 6. Rezervasyon Prisma transaction içinde overlap kontrolü ile atomik yazılır; çakışırsa hata döner.
 7. Durumlar: `CONFIRMED` (anında), `CANCELLED`, `COMPLETED`.
 8. KVKK onayı olmadan kayıt oluşmaz.
-9. Yeni public randevu ve iletişim mesajı, `RESEND_API_KEY` + gerçek `NOTIFY_EMAIL` varsa kliniğe e-posta gider. Gönderen varsayılanı `beth.t@example.com`; `NOTIFY_FROM` placeholder (`example.com`) yok sayılır, doğrulanmamış domainde sandbox’a düşülür. `ADMIN_EMAIL` (.local) yedek alıcı değildir. Bildirim başarısız olsa da randevu kaydı durur. SMS yok (ücretli). Admin `/admin/ayarlar` üzerinden test maili gönderebilir.
+9. Yeni public randevu ve iletişim mesajı, `RESEND_API_KEY` + gerçek `NOTIFY_EMAIL` varsa kliniğe e-posta gider. Gönderen her zaman `beth.t@example.com` (`NOTIFY_FROM` yok sayılır; `example.com` 403). `ADMIN_EMAIL` (.local) yedek alıcı değildir. Bildirim başarısız olsa da randevu kaydı durur. SMS yok (ücretli). Admin `/admin/ayarlar` test maili from/to/HTTP/Resend gövdesini gösterir; sunucu logu `[notify]` ile aynı ayrıntıyı yazar (API anahtarı yazılmaz).
 
 Hasta yüzünde tedavi süresi gösterilmez; süre kişiden kişiye değişir. `Service.durationMin` yalnızca admin manuel randevuda kullanılır.
 
