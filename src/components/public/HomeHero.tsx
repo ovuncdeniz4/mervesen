@@ -5,7 +5,7 @@ import { publicImageExists } from "@/lib/public-image";
 
 /** Anasayfa hero: metin solda, portre sağda; siyah→espresso kayması fotoğrafın dışında. */
 export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
-  const portraitSrc = "/images/doctor/hero.jpg";
+  const portraitSrc = "/images/doctor/hero-left.jpg";
   const hasPortrait = publicImageExists(portraitSrc);
   const alt = `${clinic.doctorName}, dental lup ile tedavi sırasında`;
 
