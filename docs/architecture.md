@@ -83,7 +83,7 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 ## Medya ve sosyal
 
 - Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: işlenmemiş `doctor/hero.jpg`; hero zemini her genişlikte siyah, metin onun üstünde)
-- Logo `public/images/brand/logo.png` — header ve footer anasayfa linki; sekme ikonu `src/app/icon.png`
+- Logo işareti `public/images/brand/logo.png` — header’da mevcut isim yazısının solunda; footer’da klinik adının solunda; sekme ikonu `src/app/icon.png`
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
 - Google yorumları: sitede 5.0 / 42 özeti ve Maps’ten alınan özgün yorumlar; tam liste Google Haritalar’da

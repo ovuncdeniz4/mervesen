@@ -5,7 +5,7 @@ import { publicImageExists } from "@/lib/public-image";
 
 const LOGO = "/images/brand/logo.png";
 
-/** Klinik logosu; tıklanınca anasayfaya gider. */
+/** Diş ikonu + mevcut marka yazısı; tıklanınca anasayfaya gider. */
 export function BrandLink({
   clinic,
   variant = "header",
@@ -16,30 +16,33 @@ export function BrandLink({
   const hasLogo = publicImageExists(LOGO);
   const inverted = variant === "footer";
 
-  if (!hasLogo) {
-    return (
-      <Link href="/" className="min-w-0">
-        <span className={`font-serif text-xl leading-none sm:text-2xl ${inverted ? "text-white" : "text-sage-dark"}`}>
-          {clinic.doctorName}
-        </span>
-        <span className={`mt-0.5 block text-[11px] uppercase tracking-[0.18em] ${inverted ? "text-sage-light/80" : "text-ink-soft"}`}>
-          Diş hekimi · Bayraklı
-        </span>
-      </Link>
-    );
-  }
-
   return (
-    <Link href="/" className="flex shrink-0 items-center">
-      <Image
-        src={LOGO}
-        alt={clinic.clinicName}
-        width={1160}
-        height={1133}
-        className={`h-14 w-auto sm:h-16 ${inverted ? "brightness-0 invert" : ""}`}
-        sizes="160px"
-        priority={variant === "header"}
-      />
+    <Link href="/" className="flex min-w-0 items-center gap-3">
+      {hasLogo ? (
+        <Image
+          src={LOGO}
+          alt=""
+          width={286}
+          height={271}
+          className={`h-10 w-auto shrink-0 sm:h-11 ${inverted ? "brightness-0 invert" : ""}`}
+          sizes="44px"
+          priority={variant === "header"}
+        />
+      ) : null}
+      <span className="min-w-0">
+        {variant === "footer" ? (
+          <span className="block font-serif text-2xl leading-none text-white">{clinic.clinicName}</span>
+        ) : (
+          <>
+            <span className="block font-serif text-xl leading-none text-sage-dark sm:text-2xl">
+              {clinic.doctorName}
+            </span>
+            <span className="mt-0.5 block text-[11px] uppercase tracking-[0.18em] text-ink-soft">
+              Diş hekimi · Bayraklı
+            </span>
+          </>
+        )}
+      </span>
     </Link>
   );
 }
