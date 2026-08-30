@@ -6,7 +6,7 @@ Public site, canlı randevu ve admin paneli aynı Next.js uygulamasında yaşar.
 ## Stack
 
 - Next.js App Router, TypeScript, Tailwind CSS
-- Prisma + SQLite (tek hekim; şema Postgres’e taşınabilir)
+- Prisma + PostgreSQL (Vercel Postgres / Neon; yerel geliştirmede aynı `DATABASE_URL`)
 - Auth.js (credentials) — yalnızca admin
 - Server Actions — randevu, iletişim formu, admin CRUD
 - `src/` kökü, `@/` alias

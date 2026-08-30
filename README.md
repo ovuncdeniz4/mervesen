@@ -4,6 +4,8 @@ Bayraklı / İzmir’de tek hekimli klinik sitesi: tanıtım, hizmetler, canlı 
 
 ## Geliştirme
 
+Postgres bağlantısı gerekir (Vercel Storage’daki veritabanı veya yerel Postgres). `.env` içine `DATABASE_URL` ve `DIRECT_URL` yazın — tek URL varsa ikisine de aynı değeri koyun.
+
 ```bash
 cp .env.example .env
 npm install
@@ -14,8 +16,27 @@ npm run dev
 
 - Site: [http://localhost:3000](http://localhost:3000)
 - Admin: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
-- Varsayılan giriş (`.env`): `admin@mervesenaskar.local` / `MerveAdmin2026`
 
 Telefon: `0554 993 01 23` · WhatsApp aynı numara · Instagram: [@dtmervesen](https://www.instagram.com/dtmervesen/)
+
+## Vercel’de yayınlama
+
+1. [vercel.com/new](https://vercel.com/new) → GitHub deposu `ovuncdeniz4/mervesen` → Production branch `main`.
+2. Storage’da oluşturduğunuz Postgres’i bu projeye **bağlayın** (Connect). Vercel çoğu zaman `DATABASE_URL` ekler.
+3. **Settings → Environment Variables** (Production):
+
+   | İsim | Değer |
+   |------|--------|
+   | `DATABASE_URL` | Storage’daki **pooled / Prisma** bağlantı dizesi |
+   | `DIRECT_URL` | Storage’daki **direct / non-pooling** dize (yalnızca bir dize varsa `DATABASE_URL` ile aynı) |
+   | `AUTH_SECRET` | `openssl rand -base64 32` çıktısı |
+   | `AUTH_TRUST_HOST` | `true` |
+   | `ADMIN_EMAIL` | Sizin admin e-postanız |
+   | `ADMIN_PASSWORD` | Yeni güçlü şifre (demo şifreyi kullanmayın) |
+
+4. Deploy. Build `prisma db push` ve seed çalıştırır (hizmetler + ilk admin; klinik saatlerini ve ayarları tekrar ezmez).
+5. **Settings → Domains** ile kendi alan adınızı ekleyin.
+
+Admin: `https://your-domain.com/admin/login`
 
 Mimari: [docs/architecture.md](docs/architecture.md)
