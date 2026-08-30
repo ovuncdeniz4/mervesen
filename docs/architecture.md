@@ -82,7 +82,7 @@ Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
 ## Medya ve sosyal
 
-- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: `doctor/hero.jpg`, bakış metne; siyah zemin espresso kahveye kayar)
+- Klinik/hekim görselleri `public/images/clinic` ve `public/images/doctor` (anasayfa hero: işlenmemiş `doctor/hero.jpg`; siyah→espresso kayması fotoğrafın dışında)
 - Logo işareti `public/images/brand/logo.png` — header’da mevcut isim yazısının solunda; footer’da klinik adının solunda; sekme ikonu `src/app/icon.png`
 - Hizmet stok görselleri `public/images/services/{slug}.jpg`
 - Instagram: `https://www.instagram.com/dtmervesen/` — before-after için profil embed + CTA
@@ -101,7 +101,7 @@ Palette (`src/app/globals.css` `@theme`):
 
 Tipografi: Cormorant Garamond (serif başlık) + DM Sans (gövde ve nav), `next/font` ile `layout.tsx`.
 
-Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda B&W portre (`object-contain`, yüz kırpılmaz). Fotoğrafın siyah çevresi sola doğru espresso kahveye kayar. Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
+Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda işlenmemiş B&W portre (`object-contain`, yüz kırpılmaz). Siyah→espresso geçişi fotoğrafın dışında, metin ile görsel arasındaki şeritte. Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
 
 Kurumsal çok şubeli poliklinik şablonu değil; tek hekim, sakin pratik. Mobil öncelikli.
 

@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { ClinicSettings } from "@prisma/client";
 import { publicImageExists } from "@/lib/public-image";
 
-/** Anasayfa hero: espresso zemin, solda metin, sağda portre; siyah fotoğraf alanı kahveye kayar. */
+/** Anasayfa hero: metin solda, portre sağda; siyah→espresso kayması fotoğrafın dışında. */
 export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
   const portraitSrc = "/images/doctor/hero.jpg";
   const hasPortrait = publicImageExists(portraitSrc);
@@ -12,7 +12,7 @@ export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
   return (
     <section className="relative overflow-hidden bg-espresso text-ivory">
       <div className="grid lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-2">
-        <div className="order-2 flex items-center px-4 py-8 sm:px-6 lg:order-1 lg:py-16 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] lg:pr-12">
+        <div className="order-2 flex items-center px-4 py-8 sm:px-6 lg:order-1 lg:py-16 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] lg:pr-8">
           <div className="max-w-xl">
             <p className="text-sm uppercase tracking-[0.22em] text-champagne">Bayraklı · Manavkuyu</p>
             <h1 className="mt-4 font-serif text-4xl leading-[1.12] text-ivory sm:text-6xl">
@@ -35,29 +35,25 @@ export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
             </div>
           </div>
         </div>
-        <div className="relative order-1 h-[min(46svh,22rem)] w-full lg:order-2 lg:h-auto lg:min-h-full">
+
+        <div className="order-1 flex flex-col lg:order-2 lg:min-h-full lg:flex-row">
           {hasPortrait ? (
             <>
-              <Image
-                src={portraitSrc}
-                alt={alt}
-                fill
-                className="object-contain object-center lg:object-left"
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                priority
-              />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-y-0 left-0 w-[32%] bg-gradient-to-r from-espresso via-espresso/55 to-transparent lg:w-[36%]"
+                className="hidden w-16 shrink-0 bg-gradient-to-r from-espresso to-[#050505] sm:w-20 lg:block"
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-espresso to-transparent lg:h-20"
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-espresso to-transparent lg:h-20"
-              />
+              <div className="relative h-[min(46svh,22rem)] w-full bg-[#050505] lg:h-auto lg:min-h-full">
+                <Image
+                  src={portraitSrc}
+                  alt={alt}
+                  fill
+                  className="object-contain object-center"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  priority
+                />
+              </div>
+              <div aria-hidden className="h-12 shrink-0 bg-gradient-to-b from-[#050505] to-espresso lg:hidden" />
             </>
           ) : (
             <div className="flex h-full min-h-[22rem] items-center p-8">
