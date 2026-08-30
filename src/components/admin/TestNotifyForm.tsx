@@ -12,10 +12,9 @@ export function TestNotifyForm() {
       <h2 className="font-serif text-xl text-sage-dark">Randevu e-postası</h2>
       <p className="mt-2 text-sm text-ink-soft">
         Gerekli env: <code className="text-ink">RESEND_API_KEY</code> ve{" "}
-        <code className="text-ink">NOTIFY_EMAIL</code>. İkincisi Resend’e <strong>kayıt olduğunuz e-posta ile birebir
-        aynı</strong> olmalı (Gmail/Outlook). Gönderen kodda sabit:{" "}
-        <code className="text-ink">beth.t@example.com</code>. Resend logundaki “example.com” genel 403 metnidir;
-        domain eklemeyin. Env değişince Redeploy. Ayrıntı aşağıda ve Vercel Logs <code className="text-ink">[notify]</code>.
+        <code className="text-ink">NOTIFY_EMAIL</code> (Resend kayıt e-postanız, örn. Gmail). Gönderen Resend test
+        adresidir. Logda <code className="text-ink">from gönderildi</code> satırı example.com olmamalı. Env değişince
+        Redeploy.
       </p>
       <form action={action} className="mt-4">
         <button
