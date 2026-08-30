@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { ClinicSettings } from "@prisma/client";
 import { publicImageExists } from "@/lib/public-image";
 
-/** Anasayfa hero: espresso zemin, solda metin, sağda yatay aynalanmış lup portresi. */
+/** Anasayfa hero: espresso zemin, solda metin, sağda portre; siyah fotoğraf alanı kahveye kayar. */
 export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
   const portraitSrc = "/images/doctor/hero.jpg";
   const hasPortrait = publicImageExists(portraitSrc);
@@ -48,7 +48,15 @@ export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-y-0 left-0 hidden w-10 bg-gradient-to-r from-espresso to-transparent lg:block"
+                className="pointer-events-none absolute inset-y-0 left-0 w-[32%] bg-gradient-to-r from-espresso via-espresso/55 to-transparent lg:w-[36%]"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-espresso to-transparent lg:h-20"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-espresso to-transparent lg:h-20"
               />
             </>
           ) : (
