@@ -44,7 +44,8 @@ SMS ücretlidir; bildirim e-posta ile gider. [Resend](https://resend.com) ücret
 1. resend.com’da ücretsiz hesap açın, **API Keys** → bir anahtar kopyalayın.
 2. Vercel → **Settings → Environment Variables** (Production + Preview):
    - `RESEND_API_KEY` — o anahtar
-   - `NOTIFY_EMAIL` — **gerçek gelen kutunuz**. Resend’e kayıt olduğunuz e-posta ile aynı olmalı. `ADMIN_EMAIL` (`…@….local`) mail düşmez; yalnızca API anahtarı da yetmez.
+   - `NOTIFY_EMAIL` — **gerçek gelen kutunuz**. Resend’e kayıt olduğunuz e-posta ile aynı olmalı. `you@example.com` veya `ADMIN_EMAIL` (`…@….local`) yazmayın.
+   - `NOTIFY_FROM` — **şimdilik eklemeyin.** `example.com` / `your-domain.com` gönderen Resend’de reddedilir. Kod `beth.t@example.com` kullanır. Kendi alan adınızı [resend.com/domains](https://resend.com/domains) üzerinde doğruladıktan sonra `randevu@sizin-alanadiniz.com` yazabilirsiniz.
 3. Env kaydettikten sonra **Deployments → ⋮ → Redeploy**. Eski deploy eski env ile çalışır.
 4. Site yayına girdikten sonra `/admin/ayarlar` → **Test maili gönder**. Başarı/hata metni ekranda çıkar.
 
@@ -54,7 +55,8 @@ Mail gelmezse kontrol sırası:
 2. Resend paneli → **Emails**: gönderildi mi, bounce mu, “only send to your email” mi.
 3. Gelen kutu **spam / junk**.
 4. Vercel → ilgili deployment → **Logs**: `Bildirim atlandı` veya `E-posta bildirimi gönderilemedi`.
-5. Kendi alan adınızı Resend’de doğrulamadan `NOTIFY_EMAIL` hesap e-postasından farklı olamaz. Doğruladıktan sonra isteğe bağlı `NOTIFY_FROM` kullanın.
+5. `The example.com domain is not verified` görürseniz Vercel’de `NOTIFY_FROM` varsa silin ve Redeploy edin. example.com’u Resend’e eklemeniz gerekmez.
+6. Kendi alan adınızı Resend’de doğrulamadan `NOTIFY_EMAIL` hesap e-postasından farklı olamaz.
 
 Admin: `https://your-domain.com/admin/login`
 
