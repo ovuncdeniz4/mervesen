@@ -96,14 +96,12 @@ function isUnverifiedDomainError(message: string): boolean {
 }
 
 function hintForResend(message: string): string {
-  if (/example\.com/i.test(message) && /not verified|verify example|from domain/i.test(message)) {
-    return "Resend göndereni example.com görmüş. example.com’u domain olarak eklemeyin. Kod artık yalnızca beth.t@example.com gönderir; Vercel’de NOTIFY_FROM varsa silin, NOTIFY_EMAIL Resend hesap e-postanız olsun, sonra Redeploy.";
-  }
-  if (isUnverifiedDomainError(message)) {
-    return "Gönderen alanı Resend’de doğrulanmamış. NOTIFY_FROM kullanmayın; kod beth.t@example.com kullanır.";
-  }
-  if (/only send testing emails to your own email/i.test(message)) {
-    return "Resend ücretsiz planda mail yalnızca hesap e-postanıza gider. NOTIFY_EMAIL’i Resend’e kayıt olduğunuz adres yapın.";
+  if (
+    /only send testing emails to your own email/i.test(message) ||
+    (/example\.com/i.test(message) && /not verified|verify example|from domain/i.test(message)) ||
+    isUnverifiedDomainError(message)
+  ) {
+    return "example.com eklemeyin (sahte örnek). Gönderen zaten beth.t@example.com. 403 genelde NOTIFY_EMAIL’in Resend hesap e-postasıyla aynı olmamasındandır. Resend → Settings’teki kayıt e-postasını Vercel NOTIFY_EMAIL yapın, Redeploy edin. Log satırında From = onboarding@resend.dev, To = o adres olmalı.";
   }
   return "";
 }

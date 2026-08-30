@@ -11,13 +11,11 @@ export function TestNotifyForm() {
     <section className="mt-10 max-w-3xl rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
       <h2 className="font-serif text-xl text-sage-dark">Randevu e-postası</h2>
       <p className="mt-2 text-sm text-ink-soft">
-        Yalnızca API anahtarı yetmez. Vercel’de <code className="text-ink">RESEND_API_KEY</code> ve gerçek bir{" "}
-        <code className="text-ink">NOTIFY_EMAIL</code> (Resend hesap e-postanız) olmalı.{" "}
-        <code className="text-ink">NOTIFY_FROM</code> varsa yok sayılır. Resend’de{" "}
-        <code className="text-ink">example.com</code> eklemeyin — o sahte bir örnektir. Gönderen her zaman{" "}
-        <code className="text-ink">beth.t@example.com</code>. <code className="text-ink">NOTIFY_EMAIL</code>{" "}
-        Resend hesap e-postanız olmalı. Env değişince Redeploy şart. Ayrıntı aşağıda ve Vercel Logs{" "}
-        <code className="text-ink">[notify]</code> satırında.
+        Gerekli env: <code className="text-ink">RESEND_API_KEY</code> ve{" "}
+        <code className="text-ink">NOTIFY_EMAIL</code>. İkincisi Resend’e <strong>kayıt olduğunuz e-posta ile birebir
+        aynı</strong> olmalı (Gmail/Outlook). Gönderen kodda sabit:{" "}
+        <code className="text-ink">beth.t@example.com</code>. Resend logundaki “example.com” genel 403 metnidir;
+        domain eklemeyin. Env değişince Redeploy. Ayrıntı aşağıda ve Vercel Logs <code className="text-ink">[notify]</code>.
       </p>
       <form action={action} className="mt-4">
         <button

@@ -44,8 +44,7 @@ SMS ücretlidir; bildirim e-posta ile gider. [Resend](https://resend.com) ücret
 1. resend.com’da ücretsiz hesap açın, **API Keys** → bir anahtar kopyalayın.
 2. Vercel → **Settings → Environment Variables** (Production + Preview):
    - `RESEND_API_KEY` — o anahtar
-   - `NOTIFY_EMAIL` — **gerçek gelen kutunuz**. Resend’e kayıt olduğunuz e-posta ile aynı olmalı. `you@example.com` veya `ADMIN_EMAIL` (`…@….local`) yazmayın.
-   - `NOTIFY_FROM` — **eklemeyin / varsa silin.** `example.com` gönderen 403 verir; Resend’de example.com doğrulatılmaz. Kod yalnızca `beth.t@example.com` kullanır.
+   - `NOTIFY_EMAIL` — Resend’e **kayıt olduğunuz e-posta ile birebir aynı**. `NOTIFY_FROM` gerekmez.
 3. Env kaydettikten sonra **Deployments → ⋮ → Redeploy**. Eski deploy eski env ile çalışır.
 4. Site yayına girdikten sonra `/admin/ayarlar` → **Test maili gönder**. Başarı/hata metni ekranda çıkar.
 
@@ -55,7 +54,7 @@ Mail gelmezse kontrol sırası:
 2. Resend paneli → **Emails**: gönderildi mi, bounce mu, “only send to your email” mi.
 3. Gelen kutu **spam / junk**.
 4. Vercel → ilgili deployment → **Logs**: `[notify]` satırı (from, NOTIFY_FROM, HTTP, Resend body). API anahtarı loglanmaz.
-5. Resend logunda `Verify example.com` görürseniz domain eklemeyin. `NOTIFY_FROM` varsa silin. Bu sürümden sonra gönderen `beth.t@example.com` olur; yeni log satırının From alanına bakın.
+5. Resend logunda `Verify example.com` **genel 403 metnidir**, domain eklemeyin. Satırın **From** alanı `onboarding@resend.dev`, **To** alanı Resend kayıt e-postanız olmalı. To farklıysa `NOTIFY_EMAIL`’i düzeltip Redeploy edin.
 6. Kendi alan adınızı Resend’de doğrulamadan `NOTIFY_EMAIL` hesap e-postasından farklı olamaz.
 
 Admin: `https://your-domain.com/admin/login`
