@@ -48,7 +48,7 @@ export function HomeHero({ clinic }: { clinic: ClinicSettings }) {
                   src={portraitSrc}
                   alt={alt}
                   fill
-                  className="object-contain object-center"
+                  className="object-contain object-right"
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   priority
                 />
