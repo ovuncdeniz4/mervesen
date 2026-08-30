@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { sendTestNotify } from "@/lib/actions/admin";
 
-/** Admin ayarlar: Resend env’ini randevu almadan doğrulamak için test maili. */
+/** Admin ayarlar: Resend env’ini randevu almadan doğrulamak için test maili + ham log. */
 export function TestNotifyForm() {
   const [state, action, pending] = useActionState(sendTestNotify, null);
 
@@ -13,9 +13,11 @@ export function TestNotifyForm() {
       <p className="mt-2 text-sm text-ink-soft">
         Yalnızca API anahtarı yetmez. Vercel’de <code className="text-ink">RESEND_API_KEY</code> ve gerçek bir{" "}
         <code className="text-ink">NOTIFY_EMAIL</code> (Resend hesap e-postanız) olmalı.{" "}
-        <code className="text-ink">NOTIFY_FROM</code> şimdilik koymayın — <code className="text-ink">example.com</code>{" "}
-        gönderen çalışmaz; kod <code className="text-ink">beth.t@example.com</code> kullanır. Env değişince Redeploy
-        şart.
+        <code className="text-ink">NOTIFY_FROM</code> varsa yok sayılır. Resend’de{" "}
+        <code className="text-ink">example.com</code> eklemeyin — o sahte bir örnektir. Gönderen her zaman{" "}
+        <code className="text-ink">beth.t@example.com</code>. <code className="text-ink">NOTIFY_EMAIL</code>{" "}
+        Resend hesap e-postanız olmalı. Env değişince Redeploy şart. Ayrıntı aşağıda ve Vercel Logs{" "}
+        <code className="text-ink">[notify]</code> satırında.
       </p>
       <form action={action} className="mt-4">
         <button
@@ -27,9 +29,19 @@ export function TestNotifyForm() {
         </button>
       </form>
       {state?.ok ? (
-        <p className="mt-3 text-sm text-sage-dark">Gönderildi: {state.to}. Gelen kutu ve spam’i kontrol edin.</p>
+        <p className="mt-3 text-sm text-sage-dark">
+          Gönderildi: {state.to} (from: {state.from}
+          {state.resendId ? `; id ${state.resendId}` : ""}). Gelen kutu ve spam’i kontrol edin.
+        </p>
       ) : null}
-      {state && !state.ok ? <p className="mt-3 text-sm text-red-800">{state.error}</p> : null}
+      {state && !state.ok ? (
+        <p className="mt-3 whitespace-pre-wrap text-sm text-red-800">{state.error}</p>
+      ) : null}
+      {state?.log ? (
+        <pre className="mt-3 overflow-x-auto rounded-xl bg-cream p-3 text-xs text-ink whitespace-pre-wrap">
+          {state.log}
+        </pre>
+      ) : null}
     </section>
   );
 }
