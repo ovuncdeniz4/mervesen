@@ -13,7 +13,7 @@ export function PublicShell({
   return (
     <>
       <Header clinic={clinic} />
-      <main className="flex-1 pb-24">{children}</main>
+      <main className="flex-1 pb-56">{children}</main>
       <Footer clinic={clinic} />
       <CommunicationFab whatsapp={clinic.whatsapp} phone={clinic.phone} instagram={clinic.instagramUrl} />
     </>
