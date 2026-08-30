@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getClinicSettings, telLink, whatsappLink } from "@/lib/clinic";
 import { PublicShell, Prose } from "@/components/public/PublicShell";
+import { serviceImageSrc } from "@/lib/public-image";
 
 export async function generateMetadata({
   params,
@@ -30,6 +31,7 @@ export default async function ServiceDetailPage({
   if (!service) notFound();
   const wa = whatsappLink(clinic.whatsapp, `Merhaba, ${service.name} hakkında bilgi almak istiyorum.`);
   const tel = telLink(clinic.phone);
+  const imageSrc = serviceImageSrc(service.slug, service.imagePath);
 
   return (
     <PublicShell clinic={clinic}>
@@ -37,10 +39,10 @@ export default async function ServiceDetailPage({
         <Link href="/hizmetler" className="text-sm text-sage-dark">
           ← Tüm hizmetler
         </Link>
-        {service.imagePath ? (
+        {imageSrc ? (
           <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[2rem]">
             <Image
-              src={service.imagePath}
+              src={imageSrc}
               alt={service.name}
               fill
               className="object-cover"

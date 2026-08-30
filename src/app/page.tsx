@@ -7,7 +7,7 @@ import { GoogleReviews } from "@/components/public/GoogleReviews";
 import { InstagramSection } from "@/components/public/InstagramSection";
 import { ClinicGallery } from "@/components/public/ClinicGallery";
 import { weekdayLabel } from "@/lib/dates";
-import { publicImageExists } from "@/lib/public-image";
+import { publicImageExists, serviceImageSrc } from "@/lib/public-image";
 
 export default async function HomePage() {
   const [clinic, services, hours] = await Promise.all([
@@ -89,16 +89,18 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((service) => (
+            {featured.map((service) => {
+              const imageSrc = serviceImageSrc(service.slug, service.imagePath);
+              return (
               <Link
                 key={service.id}
                 href={`/hizmetler/${service.slug}`}
                 className="overflow-hidden rounded-3xl border border-cream-dark bg-cream hover:border-sage/40"
               >
-                {service.imagePath ? (
+                {imageSrc ? (
                   <span className="relative block aspect-[16/10]">
                     <Image
-                      src={service.imagePath}
+                      src={imageSrc}
                       alt={service.name}
                       fill
                       className="object-cover"
@@ -111,7 +113,8 @@ export default async function HomePage() {
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
                 </span>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

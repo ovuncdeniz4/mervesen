@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getClinicSettings, getPublishedServices } from "@/lib/clinic";
 import { PublicShell } from "@/components/public/PublicShell";
+import { serviceImageSrc } from "@/lib/public-image";
 
 export const metadata: Metadata = { title: "Hizmetler" };
 
@@ -17,16 +18,18 @@ export default async function ServicesPage() {
           kişiye değiştiği için sitede süre belirtilmez; planlama muayenede birlikte yapılır.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
+          {services.map((service) => {
+            const imageSrc = serviceImageSrc(service.slug, service.imagePath);
+            return (
             <Link
               key={service.id}
               href={`/hizmetler/${service.slug}`}
               className="overflow-hidden rounded-3xl bg-paper ring-1 ring-cream-dark hover:ring-sage/40"
             >
-              {service.imagePath ? (
+              {imageSrc ? (
                 <span className="relative block aspect-[16/10]">
                   <Image
-                    src={service.imagePath}
+                    src={imageSrc}
                     alt={service.name}
                     fill
                     className="object-cover"
@@ -39,7 +42,8 @@ export default async function ServicesPage() {
                 <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.summary}</p>
               </span>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </PublicShell>

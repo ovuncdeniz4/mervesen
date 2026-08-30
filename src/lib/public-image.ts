@@ -10,3 +10,8 @@ export function publicImageExists(src: string): boolean {
 export function existingImages<T extends { src: string }>(items: T[]): T[] {
   return items.filter((item) => publicImageExists(item.src));
 }
+
+export function serviceImageSrc(slug: string, imagePath?: string | null): string | null {
+  const candidate = imagePath?.trim() || `/images/services/${slug}.jpg`;
+  return publicImageExists(candidate) ? candidate : null;
+}

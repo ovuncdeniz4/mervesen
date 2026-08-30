@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { bookAppointment, getDaySlots, getMonthAvailability, type BookingState } from "@/lib/actions/booking";
 import { formatDateLong, monthGrid, splitYmd, todayYmd } from "@/lib/dates";
@@ -25,22 +25,37 @@ export function BookingWizard({
   const [slots, setSlots] = useState<SlotDto[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<SlotDto | null>(null);
   const [counts, setCounts] = useState<Record<string, number>>({});
-  const [pending, startTransition] = useTransition();
+  const [patientName, setPatientName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
+  const [kvkk, setKvkk] = useState(false);
+  const [loadingCalendar, setLoadingCalendar] = useState(false);
   const [state, formAction, bookingPending] = useActionState(bookAppointment, null as BookingState | null);
 
   useEffect(() => {
-    startTransition(async () => {
-      const result = await getMonthAvailability(year, monthIndex);
-      setCounts(result.days);
+    let cancelled = false;
+    setLoadingCalendar(true);
+    void getMonthAvailability(year, monthIndex).then((result) => {
+      if (!cancelled) {
+        setCounts(result.days);
+        setLoadingCalendar(false);
+      }
     });
+    return () => {
+      cancelled = true;
+    };
   }, [year, monthIndex]);
 
   useEffect(() => {
     if (!selectedDay) return;
     let cancelled = false;
-    startTransition(async () => {
-      const result = await getDaySlots(selectedDay);
-      if (!cancelled) setSlots(result.slots);
+    setLoadingCalendar(true);
+    void getDaySlots(selectedDay).then((result) => {
+      if (!cancelled) {
+        setSlots(result.slots);
+        setLoadingCalendar(false);
+      }
     });
     return () => {
       cancelled = true;
@@ -124,6 +139,8 @@ export function BookingWizard({
               required
               name="patientName"
               autoComplete="name"
+              value={patientName}
+              onChange={(event) => setPatientName(event.target.value)}
               className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
             />
           </label>
@@ -134,6 +151,8 @@ export function BookingWizard({
               name="phone"
               inputMode="tel"
               autoComplete="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
               className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
             />
           </label>
@@ -143,15 +162,30 @@ export function BookingWizard({
               name="email"
               type="email"
               autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
             />
           </label>
           <label className="block text-sm">
             Not (isteğe bağlı)
-            <textarea name="notes" rows={3} className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2" />
+            <textarea
+              name="notes"
+              rows={3}
+              value={notes}
+              onChange={(event) => setNotes(event.target.value)}
+              className="mt-1 w-full rounded-xl border border-cream-dark bg-cream px-3 py-2"
+            />
           </label>
           <label className="flex items-start gap-2 text-sm text-ink-soft">
-            <input type="checkbox" name="kvkk" className="mt-1" required />
+            <input
+              type="checkbox"
+              name="kvkk"
+              className="mt-1"
+              required
+              checked={kvkk}
+              onChange={(event) => setKvkk(event.target.checked)}
+            />
             <span>
               <Link href="/kvkk" className="underline">
                 KVKK aydınlatma metnini
@@ -223,14 +257,14 @@ export function BookingWizard({
                 );
               })}
             </div>
-            {pending ? <p className="mt-2 text-sm text-ink-soft">Müsait günler yükleniyor…</p> : null}
+            {loadingCalendar ? <p className="mt-2 text-sm text-ink-soft">Müsait günler yükleniyor…</p> : null}
           </div>
 
           <div>
             <h3 className="font-serif text-xl">Saat seçin</h3>
             {!selectedDay ? (
               <p className="mt-2 text-sm text-ink-soft">Önce bir gün seçin.</p>
-            ) : slots.length === 0 && !pending ? (
+            ) : slots.length === 0 && !loadingCalendar ? (
               <p className="mt-2 text-sm text-ink-soft">{formatDateLong(selectedDay)} için müsait saat yok.</p>
             ) : (
               <div className="mt-3 flex flex-wrap gap-2">
