@@ -91,9 +91,87 @@ export function BookingWizard() {
   }
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+    <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Mobilde önce takvim: tarih/saat seçilmeden form kaydı anlamsız. */}
+        <section className="space-y-6">
+          <div>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <h2 className="font-serif text-2xl text-espresso">1. Uygun saat</h2>
+              <div className="flex gap-2">
+                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(-1)}>
+                  ‹
+                </button>
+                <span className="min-w-40 text-center capitalize">{monthLabel}</span>
+                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(1)}>
+                  ›
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted">
+              {WEEKDAYS.map((label) => (
+                <div key={label} className="py-1">
+                  {label}
+                </div>
+              ))}
+              {cells.map((ymd, index) => {
+                if (!ymd) return <div key={`e-${index}`} />;
+                const available = (counts[ymd] ?? 0) > 0;
+                const selected = selectedDay === ymd;
+                return (
+                  <button
+                    key={ymd}
+                    type="button"
+                    disabled={!available}
+                    onClick={() => {
+                      setSelectedDay(ymd);
+                      setSelectedSlot(null);
+                      setSlots([]);
+                    }}
+                    className={`rounded-md py-2 text-sm ${
+                      selected
+                        ? "bg-burgundy text-ivory"
+                        : available
+                          ? "bg-paper hover:bg-champagne/50"
+                          : "cursor-not-allowed text-muted/30"
+                    }`}
+                  >
+                    {Number(ymd.slice(-2))}
+                  </button>
+                );
+              })}
+            </div>
+            {loadingCalendar ? <p className="mt-2 text-sm text-muted">Müsait günler yükleniyor…</p> : null}
+          </div>
+
+          <div>
+            <h3 className="font-serif text-xl text-espresso">Saat seçin</h3>
+            {!selectedDay ? (
+              <p className="mt-2 text-sm text-muted">Önce bir gün seçin.</p>
+            ) : slots.length === 0 && !loadingCalendar ? (
+              <p className="mt-2 text-sm text-muted">{formatDateLong(selectedDay)} için müsait saat yok.</p>
+            ) : (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {slots.map((slot) => (
+                  <button
+                    key={slot.startAt}
+                    type="button"
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`rounded-md px-4 py-2 text-sm ${
+                      selectedSlot?.startAt === slot.startAt
+                        ? "bg-burgundy text-ivory"
+                        : "border border-champagne bg-paper hover:border-taupe"
+                    }`}
+                  >
+                    {slot.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
         <form action={formAction} className="space-y-3 rounded-lg border border-champagne bg-paper p-5">
-          <h2 className="font-serif text-2xl text-espresso">1. Bilgileriniz</h2>
+          <h2 className="font-serif text-2xl text-espresso">2. Bilgileriniz</h2>
           <input type="hidden" name="startAt" value={selectedSlot?.startAt ?? ""} />
           <label className="block text-sm">
             Ad soyad
@@ -175,83 +253,6 @@ export function BookingWizard() {
             {bookingPending ? "Kaydediliyor…" : "Randevuyu onayla"}
           </button>
         </form>
-
-        <section className="space-y-6">
-          <div>
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <h2 className="font-serif text-2xl text-espresso">2. Uygun saat</h2>
-              <div className="flex gap-2">
-                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(-1)}>
-                  ‹
-                </button>
-                <span className="min-w-40 text-center capitalize">{monthLabel}</span>
-                <button type="button" className="rounded-md border border-champagne px-3 py-1 hover:bg-champagne/40" onClick={() => shiftMonth(1)}>
-                  ›
-                </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted">
-              {WEEKDAYS.map((label) => (
-                <div key={label} className="py-1">
-                  {label}
-                </div>
-              ))}
-              {cells.map((ymd, index) => {
-                if (!ymd) return <div key={`e-${index}`} />;
-                const available = (counts[ymd] ?? 0) > 0;
-                const selected = selectedDay === ymd;
-                return (
-                  <button
-                    key={ymd}
-                    type="button"
-                    disabled={!available}
-                    onClick={() => {
-                      setSelectedDay(ymd);
-                      setSelectedSlot(null);
-                      setSlots([]);
-                    }}
-                    className={`rounded-md py-2 text-sm ${
-                      selected
-                        ? "bg-burgundy text-ivory"
-                        : available
-                          ? "bg-paper hover:bg-champagne/50"
-                          : "cursor-not-allowed text-muted/30"
-                    }`}
-                  >
-                    {Number(ymd.slice(-2))}
-                  </button>
-                );
-              })}
-            </div>
-            {loadingCalendar ? <p className="mt-2 text-sm text-muted">Müsait günler yükleniyor…</p> : null}
-          </div>
-
-          <div>
-            <h3 className="font-serif text-xl text-espresso">Saat seçin</h3>
-            {!selectedDay ? (
-              <p className="mt-2 text-sm text-muted">Önce bir gün seçin.</p>
-            ) : slots.length === 0 && !loadingCalendar ? (
-              <p className="mt-2 text-sm text-muted">{formatDateLong(selectedDay)} için müsait saat yok.</p>
-            ) : (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {slots.map((slot) => (
-                  <button
-                    key={slot.startAt}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`rounded-md px-4 py-2 text-sm ${
-                      selectedSlot?.startAt === slot.startAt
-                        ? "bg-burgundy text-ivory"
-                        : "border border-champagne bg-paper hover:border-taupe"
-                    }`}
-                  >
-                    {slot.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
     </div>
   );
 }

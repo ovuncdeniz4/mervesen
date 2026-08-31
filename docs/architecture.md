@@ -42,7 +42,7 @@ Tüm hasta yüzü Türkçe. SEO: sayfa `metadata` + anasayfada LocalBusiness JSO
 
 ## Randevu kuralları
 
-1. Hasta hizmet seçmez. Ad soyad, Türkiye cep telefonu (e-posta/not isteğe bağlı) ve KVKK sonrası takvimden boş slot seçer. Telefon `05xx` / `+90 5xx` kabul edilir, `05XXXXXXXXX` olarak saklanır; sabit hat reddedilir.
+1. Hasta hizmet seçmez. Önce takvimden boş slot seçer, sonra ad soyad, Türkiye cep telefonu (e-posta/not isteğe bağlı) ve KVKK. Telefon `05xx` / `+90 5xx` kabul edilir, `05XXXXXXXXX` olarak saklanır; sabit hat reddedilir. Mobilde takvim formun üstündedir.
 2. Public slot süresi `ClinicSettings.slotIntervalMin` (varsayılan 30 dk). Kayıt içerde `genel-muayene` hizmetine bağlanır.
 3. Takvim yalnızca müsait slot gösterir: çalışma saatleri − `CONFIRMED` randevular − `BlockedSlot`.
 4. Geçmiş, `minNoticeHours` içi ve `maxAdvanceDays` dışı slot yok.
