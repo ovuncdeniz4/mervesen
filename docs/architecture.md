@@ -9,7 +9,7 @@ Public site, canlı randevu ve admin paneli aynı Next.js uygulamasında yaşar.
 - Prisma + PostgreSQL (Vercel Postgres / Neon; yerel geliştirmede aynı `DATABASE_URL`)
 - Auth.js (credentials) — yalnızca admin
 - Server Actions — randevu, iletişim formu, admin CRUD
-- shadcn/ui (Radix Nova) — yalnızca admin paneli (`src/components/ui/`); hasta yüzü bunları import etmez
+- shadcn/ui (Radix Nova) — yalnızca admin paneli (`src/components/ui/`); hasta yüzü bunları import etmez. CLI paketi runtime’da yok; `data-open:` varyantları `src/app/shadcn-tailwind.css` içinde.
 - `src/` kökü, `@/` alias
 
 Expo / React Native kullanılmaz. Bu bir web uygulamasıdır.
