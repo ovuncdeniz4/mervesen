@@ -2,6 +2,9 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/require-admin";
 import { formatDateTime } from "@/lib/dates";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function AdminHomePage() {
   await requireAdmin();
@@ -27,42 +30,48 @@ export default async function AdminHomePage() {
   ]);
 
   return (
-    <div>
-      <h1 className="font-serif text-3xl text-sage-dark">Özet</h1>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+    <div className="space-y-8">
+      <AdminPageHeader title="Özet" />
+      <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Bugün (onaylı)" value={todayCount} />
         <Stat label="7 gün içinde" value={weekCount} />
         <Stat label="Okunmamış mesaj" value={unread} />
       </div>
-      <h2 className="mt-10 font-serif text-2xl text-sage-dark">Sıradaki randevular</h2>
-      <ul className="mt-4 divide-y divide-cream-dark rounded-2xl bg-paper">
-        {upcoming.length === 0 ? (
-          <li className="p-4 text-ink-soft">Yaklaşan randevu yok.</li>
-        ) : (
-          upcoming.map((item) => (
-            <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 p-4">
-              <div>
-                <p className="font-medium">{item.patientName}</p>
-                <p className="text-sm text-ink-soft">
-                  {item.service.name} · {formatDateTime(item.startAt)}
-                </p>
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-serif text-2xl">Sıradaki randevular</CardTitle>
+        </CardHeader>
+        <CardContent className="divide-y divide-border">
+          {upcoming.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Yaklaşan randevu yok.</p>
+          ) : (
+            upcoming.map((item) => (
+              <div key={item.id} className="flex flex-wrap items-center justify-between gap-2 py-3 first:pt-0 last:pb-0">
+                <div>
+                  <p className="font-medium">{item.patientName}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.service.name} · {formatDateTime(item.startAt)}
+                  </p>
+                </div>
+                <Button variant="link" asChild className="px-0">
+                  <Link href="/admin/takvim">Takvim</Link>
+                </Button>
               </div>
-              <Link href="/admin/takvim" className="text-sm text-sage-dark underline">
-                Takvim
-              </Link>
-            </li>
-          ))
-        )}
-      </ul>
+            ))
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl bg-paper p-5 ring-1 ring-cream-dark">
-      <p className="text-sm text-ink-soft">{label}</p>
-      <p className="mt-1 font-serif text-4xl text-sage-dark">{value}</p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardDescription>{label}</CardDescription>
+        <CardTitle className="font-serif text-4xl">{value}</CardTitle>
+      </CardHeader>
+    </Card>
   );
 }

@@ -2,6 +2,12 @@ import { requireAdmin } from "@/lib/require-admin";
 import { getClinicSettings } from "@/lib/clinic";
 import { updateClinicSettings } from "@/lib/actions/admin";
 import { TestNotifyForm } from "@/components/admin/TestNotifyForm";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default async function SettingsPage() {
   await requireAdmin();
@@ -23,32 +29,50 @@ export default async function SettingsPage() {
   ];
 
   return (
-    <div>
-      <h1 className="font-serif text-3xl text-sage-dark">Ayarlar</h1>
-      <p className="mt-2 text-sm text-ink-soft">Telefon ve WhatsApp boşsa sitede arama ve yeşil buton gizlenir.</p>
-      <form action={updateClinicSettings} className="mt-6 grid max-w-3xl gap-4">
-        {fields.map((field) => (
-          <label key={field.name} className="block text-sm">
-            {field.label}
-            {field.rows ? (
-              <textarea
-                name={field.name}
-                rows={field.rows}
-                defaultValue={String(clinic[field.name] ?? "")}
-                className="mt-1 w-full rounded-xl border border-cream-dark bg-paper px-3 py-2"
-              />
-            ) : (
-              <input
-                name={field.name}
-                defaultValue={String(clinic[field.name] ?? "")}
-                className="mt-1 w-full rounded-xl border border-cream-dark bg-paper px-3 py-2"
-              />
-            )}
-          </label>
-        ))}
-        <button className="w-fit rounded-full bg-sage px-6 py-2 text-white">Kaydet</button>
-      </form>
-      <TestNotifyForm />
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="Klinik ayarları"
+        description="Telefon ve WhatsApp boşsa sitede arama ve yeşil buton gizlenir."
+      />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Klinik bilgileri</CardTitle>
+          <CardDescription>Herkese açık sitede kullanılan iletişim ve içerik alanları.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form action={updateClinicSettings} className="grid max-w-3xl gap-4">
+            {fields.map((field) => (
+              <div key={field.name} className="grid gap-2">
+                <Label htmlFor={field.name}>{field.label}</Label>
+                {field.rows ? (
+                  <Textarea
+                    id={field.name}
+                    name={field.name}
+                    rows={field.rows}
+                    defaultValue={String(clinic[field.name] ?? "")}
+                  />
+                ) : (
+                  <Input id={field.name} name={field.name} defaultValue={String(clinic[field.name] ?? "")} />
+                )}
+              </div>
+            ))}
+            <Button type="submit" className="w-fit">
+              Kaydet
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Randevu e-postası</CardTitle>
+          <CardDescription>Resend env’ini randevu almadan doğrulamak için test maili.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TestNotifyForm />
+        </CardContent>
+      </Card>
     </div>
   );
 }

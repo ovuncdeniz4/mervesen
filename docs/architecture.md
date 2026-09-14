@@ -9,6 +9,7 @@ Public site, canlı randevu ve admin paneli aynı Next.js uygulamasında yaşar.
 - Prisma + PostgreSQL (Vercel Postgres / Neon; yerel geliştirmede aynı `DATABASE_URL`)
 - Auth.js (credentials) — yalnızca admin
 - Server Actions — randevu, iletişim formu, admin CRUD
+- shadcn/ui (Radix Nova) — yalnızca admin paneli (`src/components/ui/`); hasta yüzü bunları import etmez. CLI paketi runtime’da yok; `data-open:` varyantları `src/app/shadcn-tailwind.css` içinde.
 - `src/` kökü, `@/` alias
 
 Expo / React Native kullanılmaz. Bu bir web uygulamasıdır.
@@ -16,7 +17,9 @@ Expo / React Native kullanılmaz. Bu bir web uygulamasıdır.
 ## Klasörler
 
 - `src/app/` — public rotalar, `admin/` paneli, `api/auth` session
-- `src/components/` — layout, UI, randevu ve admin bileşenleri
+- `src/components/` — layout, randevu ve admin bileşenleri
+- `src/components/ui/` — shadcn primitifleri (Button, Card, Table, Sheet…); admin-only
+- `src/components/admin/` — panel iskeleti (kenar menü, başlık, rozet)
 - `src/lib/` — Prisma istemcisi, auth, müsaitlik motoru, server actions
 - `src/lib/content/` — hizmet metinleri, hakkımızda, Google yorumları
 - `prisma/` — şema ve seed
@@ -70,6 +73,8 @@ Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot te
 - `/admin/ayarlar` — telefon, WhatsApp, Instagram, adres, bio, randevu e-posta testi
 
 Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
+
+Panel arayüzü shadcn/ui kullanır: espresso kenar menü (mobilde Sheet), Card/Table formlar, clinic paletine map edilmiş token’lar (`primary` burgundy, `background` ivory). Hasta sitesindeki `text-muted` rengi (`#6b6058`) korunur; shadcn’nin `--muted` yüzeyi `text-muted-foreground` / `bg-champagne` ile kullanılır. Server-action formlarda native `<select>` (`NativeSelect`) ve native checkbox vardır — Radix Checkbox `name` göndermez.
 
 ## Veri
 
