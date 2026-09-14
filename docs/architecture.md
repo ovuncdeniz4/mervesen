@@ -74,7 +74,7 @@ Admin iptal, erteleme, manuel randevu ve blok ekleyebilir. İptal edilen slot te
 
 Admin olmayan istekler `/admin/login`e yönlendirilir. Session HTTP-only cookie.
 
-Panel arayüzü shadcn/ui kullanır: espresso kenar menü (mobilde Sheet), Card/Table formlar, clinic paletine map edilmiş token’lar (`primary` burgundy, `background` ivory). Hasta sitesindeki `text-muted` rengi (`#6b6058`) korunur; shadcn’nin `--muted` yüzeyi `text-muted-foreground` / `bg-champagne` ile kullanılır. Server-action formlarda native `<select>` (`NativeSelect`) ve native checkbox vardır — Radix Checkbox `name` göndermez.
+Panel arayüzü shadcn/ui kullanır: espresso kenar menü (mobilde hamburger + Sheet, masaüstünde sabit sütun), Card/Table formlar, clinic paletine map edilmiş token’lar (`primary` burgundy, `background` ivory). Hasta sitesindeki `text-muted` rengi (`#6b6058`) korunur; shadcn’nin `--muted` yüzeyi `text-muted-foreground` / `bg-champagne` ile kullanılır. Server-action formlarda native `<select>` (`NativeSelect`) ve native checkbox vardır — Radix Checkbox `name` göndermez. Mobil admin yerleşimi `globals.css` içindeki `.admin-shell` sınıflarıyladır.
 
 ## Veri
 

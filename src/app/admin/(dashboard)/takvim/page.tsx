@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/require-admin";
-import { formatTimeIstanbul, todayYmd, weekdayLabel, weekdayFromYmd } from "@/lib/dates";
+import { formatTimeIstanbul, todayYmd, weekdayFromYmd, formatDateLong } from "@/lib/dates";
 import { createBlockedSlotForm, deleteBlockedSlot, updateAppointmentStatus } from "@/lib/actions/admin";
 import { ManualAppointmentForm } from "@/components/admin/ManualAppointmentForm";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
@@ -39,11 +39,16 @@ export default async function AdminCalendarPage({
     <div className="space-y-8">
       <AdminPageHeader
         title="Takvim"
-        description={`${weekdayLabel(weekdayFromYmd(ymd))} · ${hours?.closed ? "Kapalı" : `${hours?.startTime}–${hours?.endTime}`}`}
+        description={`${formatDateLong(ymd)} · ${hours?.closed ? "Kapalı" : `${hours?.startTime}–${hours?.endTime}`}`}
       >
-        <form className="flex gap-2">
-          <Input type="date" name="gun" defaultValue={ymd} className="w-auto" />
-          <Button type="submit">Göster</Button>
+        <form className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-end">
+          <label className="grid gap-1.5 text-sm font-medium">
+            Gün
+            <Input type="date" name="gun" defaultValue={ymd} lang="tr-TR" className="w-full sm:w-auto" />
+          </label>
+          <Button type="submit" className="h-11 sm:h-8">
+            Göster
+          </Button>
         </form>
       </AdminPageHeader>
 
@@ -138,10 +143,19 @@ export default async function AdminCalendarPage({
           <CardContent>
             <form action={createBlockedSlotForm} className="grid gap-3">
               <input type="hidden" name="ymd" value={ymd} />
-              <Input type="time" name="startTime" required />
-              <Input type="time" name="endTime" required />
-              <Input name="reason" placeholder="Neden" />
-              <Button type="submit" variant="outline">
+              <label className="grid gap-1.5 text-sm font-medium">
+                Başlangıç
+                <Input type="time" name="startTime" required />
+              </label>
+              <label className="grid gap-1.5 text-sm font-medium">
+                Bitiş
+                <Input type="time" name="endTime" required />
+              </label>
+              <label className="grid gap-1.5 text-sm font-medium">
+                Neden
+                <Input name="reason" placeholder="Öğle arası, tatil…" />
+              </label>
+              <Button type="submit" variant="outline" className="h-11 md:h-8">
                 Bloğu kaydet
               </Button>
             </form>

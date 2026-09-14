@@ -5,7 +5,6 @@ import { createManualAppointmentAction, type ManualAppointmentState } from "@/li
 import { TR_MOBILE_HINT, TR_MOBILE_PLACEHOLDER } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 
 type ServiceOption = { id: string; name: string; durationMin: number };
@@ -20,8 +19,8 @@ export function ManualAppointmentForm({ ymd, services }: { ymd: string; services
   return (
     <form action={action} className="grid gap-3">
       <input type="hidden" name="ymd" value={ymd} />
-      <div className="grid gap-2">
-        <Label htmlFor="manual-service">Hizmet</Label>
+      <label className="grid gap-1.5 text-sm font-medium">
+        Hizmet
         <NativeSelect id="manual-service" name="serviceId" required>
           {services.map((service) => (
             <option key={service.id} value={service.id}>
@@ -29,17 +28,17 @@ export function ManualAppointmentForm({ ymd, services }: { ymd: string; services
             </option>
           ))}
         </NativeSelect>
-      </div>
-      <div className="grid gap-2">
-        <Label htmlFor="manual-time">Saat</Label>
+      </label>
+      <label className="grid gap-1.5 text-sm font-medium">
+        Saat
         <Input id="manual-time" type="time" name="time" required />
-      </div>
-      <div className="grid gap-2">
-        <Label htmlFor="manual-name">Ad soyad</Label>
-        <Input id="manual-name" name="patientName" placeholder="Ad soyad" required />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="manual-phone">Telefon</Label>
+      </label>
+      <label className="grid gap-1.5 text-sm font-medium">
+        Ad soyad
+        <Input id="manual-name" name="patientName" autoComplete="name" required />
+      </label>
+      <label className="grid gap-1.5 text-sm font-medium">
+        Telefon
         <Input
           id="manual-phone"
           name="phone"
@@ -50,11 +49,14 @@ export function ManualAppointmentForm({ ymd, services }: { ymd: string; services
           maxLength={18}
           required
         />
-        <p className="text-xs text-muted-foreground">{TR_MOBILE_HINT}</p>
-      </div>
-      <Input name="notes" placeholder="Not" />
+        <span className="font-normal text-muted-foreground">{TR_MOBILE_HINT}</span>
+      </label>
+      <label className="grid gap-1.5 text-sm font-medium">
+        Not
+        <Input id="manual-notes" name="notes" />
+      </label>
       {state && !state.ok ? <p className="text-sm text-destructive">{state.error}</p> : null}
-      <Button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending} className="h-11 md:h-8">
         {pending ? "Kaydediliyor…" : "Ekle"}
       </Button>
     </form>
