@@ -87,6 +87,14 @@ select {
   font: inherit;
 }
 
+input[type="date"],
+input[type="time"] {
+  color-scheme: light;
+  min-height: 2.75rem;
+  background: var(--color-paper);
+  color: var(--color-espresso);
+}
+
 :root {
   --background: #f5f0e8;
   --foreground: #29231f;
@@ -165,5 +173,61 @@ select {
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Admin chrome: do not rely on `hidden` / `md:flex` here — iPhone was showing the
+   desktop rail as a full-width header with horizontal overflowing links. */
+.admin-shell {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  background: var(--color-ivory);
+}
+.admin-sidebar {
+  display: none;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+}
+.admin-topbar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  border-bottom: 1px solid var(--sidebar-border);
+  padding: 0.5rem 0.75rem;
+}
+.admin-nav-links {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 0.75rem;
+}
+.admin-main {
+  flex: 1;
+  padding: 1rem;
+}
+@media (min-width: 768px) {
+  .admin-shell {
+    flex-direction: row;
+  }
+  .admin-sidebar {
+    display: flex;
+    width: 14rem;
+    flex-shrink: 0;
+    flex-direction: column;
+    border-right: 1px solid var(--sidebar-border);
+  }
+  .admin-topbar {
+    display: none;
+  }
+  .admin-main {
+    padding: 2rem;
   }
 }

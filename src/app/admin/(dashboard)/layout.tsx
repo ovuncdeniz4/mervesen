@@ -9,9 +9,9 @@ export default async function AdminDashboardLayout({
 }) {
   const session = await requireAdmin();
   return (
-    <div className="flex min-h-screen flex-col bg-background md:flex-row">
+    <div className="admin-shell">
       <AdminNav email={session.user.email ?? ""} />
-      <div className="flex-1 p-4 sm:p-8">{children}</div>
+      <div className="admin-main">{children}</div>
     </div>
   );
 }
