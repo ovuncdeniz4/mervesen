@@ -1,0 +1,79 @@
+{
+  "rules": {
+    "shadcn/no-restyle": [
+      "error",
+      {
+        "allow": ["layout"],
+        "contracts": [
+          {
+            "pattern": "^Button$",
+            "allow": ["layout", "w-full", "w-fit", "px-0", "p-0", "h-auto"],
+            "message": {
+              "spacing": "{{component}} yüksekliği size ile gelir (sm/lg). Padding ekleme.",
+              "color": "{{component}} rengi variant ile gelir: {{variants|default, outline, secondary, ghost, destructive, link, sidebar}}.",
+              "default": "{{component}} görünümünü className ile boyama. {{file}}"
+            }
+          },
+          {
+            "pattern": "^Input$|^Textarea$|^NativeSelect$",
+            "allow": ["layout", "w-full", "w-auto", "w-28", "w-32"]
+          },
+          {
+            "pattern": "^CardTitle$",
+            "allow": ["layout", "typography"]
+          },
+          {
+            "pattern": "^CardContent$",
+            "allow": ["layout", "spacing", "shape", "color", "typography"]
+          },
+          {
+            "pattern": "^Card$|^CardHeader$|^CardDescription$|^CardFooter$",
+            "allow": ["layout", "spacing", "color"]
+          },
+          {
+            "pattern": "^Badge$|^Label$|^Separator$",
+            "allow": ["layout", "color"]
+          },
+          {
+            "pattern": "^Table",
+            "allow": ["layout", "typography", "spacing", "color"]
+          },
+          {
+            "pattern": "^Sheet",
+            "allow": ["layout", "color", "typography"]
+          }
+        ]
+      }
+    ],
+    "shadcn/no-raw-colors": [
+      "error",
+      {
+        "message": "Ham palet/hex yok. Klinik token kullan (ivory, champagne, taupe, espresso, burgundy, muted, primary, photo-ink, whatsapp). Tema: {{file}}"
+      }
+    ],
+    "shadcn/no-arbitrary-values": [
+      "error",
+      {
+        "allow": ["layout"]
+      }
+    ],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-unknown-classes": [
+      "error",
+      {
+        "allow": ["instagram-media"]
+      }
+    ],
+    "shadcn/require-static-classes": "error"
+  },
+  "overrides": [
+    {
+      "files": ["src/components/ui/**"],
+      "rules": {
+        "shadcn/no-restyle": "off",
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/require-static-classes": "off"
+      }
+    }
+  ]
+}

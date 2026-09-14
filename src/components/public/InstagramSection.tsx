@@ -23,7 +23,7 @@ export function InstagramSection({ instagramUrl }: { instagramUrl: string }) {
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
       <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr]">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-taupe">Instagram</p>
+          <p className="text-xs uppercase tracking-lux text-taupe">Instagram</p>
           <h2 className="mt-2 font-serif text-3xl text-espresso sm:text-4xl">Tedavi sonuçları @ {INSTAGRAM_HANDLE}</h2>
           <p className="mt-5 leading-relaxed text-muted">
             Before-after fotoğrafları ve klinik paylaşımları Instagram hesabımızda yer alır. Siteye gelen ziyaretçiler
@@ -40,10 +40,9 @@ export function InstagramSection({ instagramUrl }: { instagramUrl: string }) {
         </div>
         <div className="overflow-hidden rounded-lg border border-champagne bg-paper">
           <blockquote
-            className="instagram-media w-full"
+            className="instagram-media m-0 w-full max-w-full"
             data-instgrm-permalink={href}
             data-instgrm-version="14"
-            style={{ margin: 0, maxWidth: "100%" }}
           >
             <a href={href} target="_blank" rel="noreferrer" className="block p-6 text-espresso underline decoration-champagne underline-offset-4">
               @{INSTAGRAM_HANDLE} profilini aç

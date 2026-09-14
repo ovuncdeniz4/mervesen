@@ -24,7 +24,7 @@ export function AdminNav({ email }: { email: string }) {
         <p className="font-serif text-lg text-ivory">Klinik</p>
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon-sm" className="border-sidebar-border bg-transparent text-ivory">
+            <Button variant="sidebar" size="icon-sm">
               <MenuIcon />
               <span className="sr-only">Menü</span>
             </Button>
@@ -76,7 +76,7 @@ function LogoutButton() {
   return (
     <form action={logoutAdmin} className="p-4">
       <Separator className="mb-4 bg-sidebar-border" />
-      <Button type="submit" variant="ghost" className="w-full justify-start text-sidebar-foreground">
+      <Button type="submit" variant="sidebar-ghost" className="w-full justify-start">
         Çıkış
       </Button>
     </form>

@@ -7,7 +7,7 @@ export function GoogleReviews({ mapsUrl }: { mapsUrl: string }) {
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-taupe">Google yorumları</p>
+            <p className="text-xs uppercase tracking-lux text-taupe">Google yorumları</p>
             <h2 className="mt-2 font-serif text-3xl text-espresso sm:text-4xl">Hastalarımız ne diyor?</h2>
             <p className="mt-3 text-muted">
               Google’da {googleReviewsMeta.rating.toFixed(1)} / 5 · {googleReviewsMeta.count} değerlendirme

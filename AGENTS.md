@@ -7,3 +7,5 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+After UI or `className` changes, run `npm run lint` and fix all errors (including `@shadcn/lint`). Do not restyle admin shadcn components via `className`; use `size` / `variant` or edit `src/components/ui`. The public site does not import shadcn. Theme tokens live in `src/app/globals.css`. Contracts: `design-system.lint.json`.

@@ -8,7 +8,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <p className="text-xs uppercase tracking-[0.2em] text-taupe">Yönetim</p>
+          <p className="text-xs uppercase tracking-lux text-taupe">Yönetim</p>
           <CardTitle className="font-serif text-3xl">Admin girişi</CardTitle>
           <CardDescription>Randevu takvimi ve klinik ayarları.</CardDescription>
         </CardHeader>
