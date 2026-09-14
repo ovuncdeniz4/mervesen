@@ -36,7 +36,7 @@ export function BrandLink({
             <span className="block font-serif text-xl leading-none text-ivory sm:text-2xl">
               {clinic.doctorName}
             </span>
-            <span className="mt-0.5 block text-[11px] uppercase tracking-[0.18em] text-champagne">
+            <span className="mt-0.5 block text-xs uppercase tracking-lux-sm text-champagne">
               Diş hekimi · Bayraklı
             </span>
           </>

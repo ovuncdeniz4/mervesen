@@ -14,7 +14,7 @@ export default async function AboutPage() {
   return (
     <PublicShell clinic={clinic}>
       <article className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-        <p className="text-xs uppercase tracking-[0.2em] text-taupe">Hakkımızda</p>
+        <p className="text-xs uppercase tracking-lux text-taupe">Hakkımızda</p>
         <h1 className="mt-3 font-serif text-4xl text-espresso sm:text-5xl">{aboutPage.pageTitle}</h1>
 
         <div className="mt-14 grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">

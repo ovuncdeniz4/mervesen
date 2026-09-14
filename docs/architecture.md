@@ -104,8 +104,18 @@ Palette (`src/app/globals.css` `@theme`):
 - Espresso `#29231F` — gövde metni ve koyu yüzeyler (header, hero, footer)
 - Burgundy `#6E3B3B` — birincil düğmeler (hover champagne/taupe)
 - Muted rose `#B89A91` — seyrek vurgu
+- Photo ink `#050505` (`photo-ink`) — hero portre zemini (siyah→espresso kayması fotoğrafın dışında)
+- WhatsApp yeşili `#25D366` (`whatsapp`) — yalnızca FAB
 
-Tipografi: Cormorant Garamond (serif başlık) + DM Sans (gövde ve nav), `next/font` ile `layout.tsx`.
+Tipografi: Cormorant Garamond (serif başlık) + DM Sans (gövde ve nav), `next/font` ile `layout.tsx`. Harf aralığı token’ları: `tracking-lux` / `tracking-lux-sm` / `tracking-lux-wide`. Başlık satır yüksekliği: `leading-display`. Instagram FAB: `ig-gradient`.
+
+## Tasarım lint (`@shadcn/lint`)
+
+Kurallar `design-system.lint.json` içinde; ESLint `npm run lint` ile çalışır. Hasta sitesi shadcn bileşeni import etmez ama ham hex, unknown class ve arbitrary value yine yakalanır.
+
+Admin: Button / Input / Card görünümünü `className` ile boyama. Yükseklik `size`, renk `variant` (`sidebar`, `sidebar-ghost` dahil). İstisna: hero tam genişlik hizası `HomeHero` içinde tek `shadcn/no-arbitrary-values` disable.
+
+UI veya `className` değişince lint’i çalıştır; shadcn hatalarını düzelt, `eslint-disable` ekleme (hero hizası hariç).
 
 Hero: espresso alan; solda fildişi/champagne metin ve burgundy “Randevu al”; sağda işlenmemiş B&W portre (`object-contain object-right`, sağ kenara yaslı, yüz kırpılmaz). Siyah→espresso geçişi fotoğrafın dışında, metin ile görsel arasındaki şeritte. Header espresso, site gövdesi fildişi, footer espresso — aynı kimlik. WhatsApp/Instagram FAB marka renklerinde kalır; ara düğmesi burgundy.
 

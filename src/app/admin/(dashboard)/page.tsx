@@ -70,7 +70,7 @@ function Stat({ label, value }: { label: string; value: number }) {
     <Card>
       <CardHeader>
         <CardDescription>{label}</CardDescription>
-        <CardTitle className="font-serif text-4xl">{value}</CardTitle>
+        <CardTitle className="font-sans text-4xl font-semibold tabular-nums tracking-tight">{value}</CardTitle>
       </CardHeader>
     </Card>
   );

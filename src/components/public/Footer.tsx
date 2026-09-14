@@ -14,7 +14,7 @@ export function Footer({ clinic }: { clinic: ClinicSettings }) {
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-champagne/80">{clinic.tagline}</p>
         </div>
         <div className="text-sm leading-relaxed">
-          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-taupe">Adres</p>
+          <p className="mb-3 text-xs uppercase tracking-lux text-taupe">Adres</p>
           <p>{clinic.address}</p>
           {tel ? (
             <p className="mt-2">
@@ -39,7 +39,7 @@ export function Footer({ clinic }: { clinic: ClinicSettings }) {
           ) : null}
         </div>
         <div className="flex flex-col gap-2 text-sm">
-          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-taupe">Sayfalar</p>
+          <p className="mb-3 text-xs uppercase tracking-lux text-taupe">Sayfalar</p>
           <Link href="/hizmetler" className="hover:text-ivory">
             Tedaviler
           </Link>

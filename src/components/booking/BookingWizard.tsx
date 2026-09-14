@@ -23,12 +23,11 @@ export function BookingWizard() {
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [kvkk, setKvkk] = useState(false);
-  const [loadingCalendar, setLoadingCalendar] = useState(false);
+  const [loadingCalendar, setLoadingCalendar] = useState(true);
   const [state, formAction, bookingPending] = useActionState(bookAppointment, null as BookingState | null);
 
   useEffect(() => {
     let cancelled = false;
-    setLoadingCalendar(true);
     void getMonthAvailability(year, monthIndex).then((result) => {
       if (!cancelled) {
         setCounts(result.days);
@@ -43,7 +42,6 @@ export function BookingWizard() {
   useEffect(() => {
     if (!selectedDay) return;
     let cancelled = false;
-    setLoadingCalendar(true);
     void getDaySlots(selectedDay).then((result) => {
       if (!cancelled) {
         setSlots(result.slots);
@@ -62,6 +60,7 @@ export function BookingWizard() {
 
   function shiftMonth(delta: number) {
     const date = new Date(year, monthIndex + delta, 1);
+    setLoadingCalendar(true);
     setYear(date.getFullYear());
     setMonthIndex(date.getMonth());
     setSelectedDay(null);
@@ -72,7 +71,7 @@ export function BookingWizard() {
   if (state?.ok) {
     return (
       <div className="rounded-lg border border-champagne bg-paper p-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-taupe">Randevu alındı</p>
+        <p className="text-xs uppercase tracking-lux text-taupe">Randevu alındı</p>
         <h2 className="mt-3 font-serif text-3xl text-espresso">Sizi takvime yazdık.</h2>
         <p className="mt-4 text-muted">
           Seçtiğiniz saat kaydedildi. Kliniğe gelirken kimliğinizi yanınızda bulundurun. Yazmak veya aramak için sağ
@@ -123,6 +122,7 @@ export function BookingWizard() {
                     type="button"
                     disabled={!available}
                     onClick={() => {
+                      setLoadingCalendar(true);
                       setSelectedDay(ymd);
                       setSelectedSlot(null);
                       setSlots([]);
