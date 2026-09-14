@@ -2,6 +2,12 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/require-admin";
 import { formatDateTime, ymdInIstanbul, hmFromDate } from "@/lib/dates";
 import { rescheduleAppointmentForm, updateAppointmentStatus } from "@/lib/actions/admin";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { StatusBadge } from "@/components/admin/StatusBadge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default async function AppointmentsPage({
   searchParams,
@@ -27,81 +33,83 @@ export default async function AppointmentsPage({
   });
 
   return (
-    <div>
-      <h1 className="font-serif text-3xl text-sage-dark">Randevular</h1>
-      <form className="mt-4 flex gap-2">
-        <input
-          name="q"
-          defaultValue={query}
-          placeholder="Ad, telefon, e-posta"
-          className="w-full max-w-sm rounded-xl border border-cream-dark bg-paper px-3 py-2"
-        />
-        <button className="rounded-full bg-sage px-4 py-2 text-white">Ara</button>
+    <div className="space-y-6">
+      <AdminPageHeader title="Randevular" />
+      <form className="flex max-w-md gap-2">
+        <Input name="q" defaultValue={query} placeholder="Ad, telefon, e-posta" />
+        <Button type="submit">Ara</Button>
       </form>
-      <div className="mt-6 overflow-x-auto rounded-2xl bg-paper ring-1 ring-cream-dark">
-        <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-cream-dark text-ink-soft">
-            <tr>
-              <th className="p-3">Hasta</th>
-              <th className="p-3">Hizmet</th>
-              <th className="p-3">Zaman</th>
-              <th className="p-3">Durum</th>
-              <th className="p-3">İşlem</th>
-            </tr>
-          </thead>
-          <tbody>
-            {appointments.map((item) => (
-              <tr key={item.id} className="border-b border-cream-dark/70 align-top">
-                <td className="p-3">
-                  <p className="font-medium">{item.patientName}</p>
-                  <p className="text-ink-soft">{item.phone}</p>
-                </td>
-                <td className="p-3">{item.service.name}</td>
-                <td className="p-3">{formatDateTime(item.startAt)}</td>
-                <td className="p-3">{item.status}</td>
-                <td className="space-y-2 p-3">
-                  {item.status !== "CANCELLED" ? (
-                    <form
-                      action={async () => {
-                        "use server";
-                        await updateAppointmentStatus(item.id, "CANCELLED");
-                      }}
-                    >
-                      <button className="text-red-800 underline">İptal</button>
+      <Card>
+        <CardContent className="px-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Hasta</TableHead>
+                <TableHead>Hizmet</TableHead>
+                <TableHead>Zaman</TableHead>
+                <TableHead>Durum</TableHead>
+                <TableHead>İşlem</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {appointments.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-muted-foreground">
+                    Kayıt yok.
+                  </TableCell>
+                </TableRow>
+              ) : null}
+              {appointments.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="whitespace-normal">
+                    <p className="font-medium">{item.patientName}</p>
+                    <p className="text-muted-foreground">{item.phone}</p>
+                  </TableCell>
+                  <TableCell>{item.service.name}</TableCell>
+                  <TableCell>{formatDateTime(item.startAt)}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={item.status} />
+                  </TableCell>
+                  <TableCell className="space-y-2 whitespace-normal">
+                    {item.status !== "CANCELLED" ? (
+                      <form
+                        action={async () => {
+                          "use server";
+                          await updateAppointmentStatus(item.id, "CANCELLED");
+                        }}
+                      >
+                        <Button type="submit" variant="destructive" size="sm">
+                          İptal
+                        </Button>
+                      </form>
+                    ) : null}
+                    {item.status === "CONFIRMED" ? (
+                      <form
+                        action={async () => {
+                          "use server";
+                          await updateAppointmentStatus(item.id, "COMPLETED");
+                        }}
+                      >
+                        <Button type="submit" variant="secondary" size="sm">
+                          Tamamlandı
+                        </Button>
+                      </form>
+                    ) : null}
+                    <form action={rescheduleAppointmentForm} className="flex flex-wrap items-center gap-1">
+                      <input type="hidden" name="id" value={item.id} />
+                      <Input type="date" name="ymd" defaultValue={ymdInIstanbul(item.startAt)} className="h-8 w-auto" />
+                      <Input type="time" name="time" defaultValue={hmFromDate(item.startAt)} className="h-8 w-auto" />
+                      <Button type="submit" variant="outline" size="sm">
+                        Ertele
+                      </Button>
                     </form>
-                  ) : null}
-                  {item.status === "CONFIRMED" ? (
-                    <form
-                      action={async () => {
-                        "use server";
-                        await updateAppointmentStatus(item.id, "COMPLETED");
-                      }}
-                    >
-                      <button className="text-sage-dark underline">Tamamlandı</button>
-                    </form>
-                  ) : null}
-                  <form action={rescheduleAppointmentForm} className="flex flex-wrap gap-1">
-                    <input type="hidden" name="id" value={item.id} />
-                    <input
-                      type="date"
-                      name="ymd"
-                      defaultValue={ymdInIstanbul(item.startAt)}
-                      className="rounded border border-cream-dark px-1"
-                    />
-                    <input
-                      type="time"
-                      name="time"
-                      defaultValue={hmFromDate(item.startAt)}
-                      className="rounded border border-cream-dark px-1"
-                    />
-                    <button className="underline">Ertele</button>
-                  </form>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

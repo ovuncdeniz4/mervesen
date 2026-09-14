@@ -2,43 +2,37 @@
 
 import { useActionState } from "react";
 import { sendTestNotify } from "@/lib/actions/admin";
+import { Button } from "@/components/ui/button";
 
 /** Admin ayarlar: Resend env’ini randevu almadan doğrulamak için test maili + ham log. */
 export function TestNotifyForm() {
   const [state, action, pending] = useActionState(sendTestNotify, null);
 
   return (
-    <section className="mt-10 max-w-3xl rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
-      <h2 className="font-serif text-xl text-sage-dark">Randevu e-postası</h2>
-      <p className="mt-2 text-sm text-ink-soft">
-        Gerekli env: <code className="text-ink">RESEND_API_KEY</code> ve{" "}
-        <code className="text-ink">NOTIFY_EMAIL</code> (Resend kayıt e-postanız, örn. Gmail). Gönderen Resend test
-        adresidir. Logda <code className="text-ink">from gönderildi</code> satırı example.com olmamalı. Env değişince
-        Redeploy.
+    <div className="max-w-3xl space-y-4">
+      <p className="text-sm text-muted-foreground">
+        Gerekli env: <code className="text-foreground">RESEND_API_KEY</code> ve{" "}
+        <code className="text-foreground">NOTIFY_EMAIL</code> (Resend kayıt e-postanız, örn. Gmail). Gönderen Resend
+        test adresidir. Logda <code className="text-foreground">from gönderildi</code> satırı example.com olmamalı. Env
+        değişince Redeploy.
       </p>
-      <form action={action} className="mt-4">
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-full border border-sage px-6 py-2 text-sage-dark disabled:opacity-50"
-        >
+      <form action={action}>
+        <Button type="submit" disabled={pending} variant="outline">
           {pending ? "Gönderiliyor…" : "Test maili gönder"}
-        </button>
+        </Button>
       </form>
       {state?.ok ? (
-        <p className="mt-3 text-sm text-sage-dark">
+        <p className="text-sm text-foreground">
           Gönderildi: {state.to} (from: {state.from}
           {state.resendId ? `; id ${state.resendId}` : ""}). Gelen kutu ve spam’i kontrol edin.
         </p>
       ) : null}
-      {state && !state.ok ? (
-        <p className="mt-3 whitespace-pre-wrap text-sm text-red-800">{state.error}</p>
-      ) : null}
+      {state && !state.ok ? <p className="whitespace-pre-wrap text-sm text-destructive">{state.error}</p> : null}
       {state?.log ? (
-        <pre className="mt-3 overflow-x-auto rounded-xl bg-cream p-3 text-xs text-ink whitespace-pre-wrap">
+        <pre className="overflow-x-auto rounded-lg bg-ivory p-3 text-xs whitespace-pre-wrap text-espresso">
           {state.log}
         </pre>
       ) : null}
-    </section>
+    </div>
   );
 }

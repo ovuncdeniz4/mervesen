@@ -4,6 +4,11 @@ import { requireAdmin } from "@/lib/require-admin";
 import { formatTimeIstanbul, todayYmd, weekdayLabel, weekdayFromYmd } from "@/lib/dates";
 import { createBlockedSlotForm, deleteBlockedSlot, updateAppointmentStatus } from "@/lib/actions/admin";
 import { ManualAppointmentForm } from "@/components/admin/ManualAppointmentForm";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { StatusBadge } from "@/components/admin/StatusBadge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default async function AdminCalendarPage({
   searchParams,
@@ -32,64 +37,64 @@ export default async function AdminCalendarPage({
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-serif text-3xl text-sage-dark">Takvim</h1>
-          <p className="text-sm text-ink-soft">
-            {weekdayLabel(weekdayFromYmd(ymd))} · {hours?.closed ? "Kapalı" : `${hours?.startTime}–${hours?.endTime}`}
-          </p>
-        </div>
+      <AdminPageHeader
+        title="Takvim"
+        description={`${weekdayLabel(weekdayFromYmd(ymd))} · ${hours?.closed ? "Kapalı" : `${hours?.startTime}–${hours?.endTime}`}`}
+      >
         <form className="flex gap-2">
-          <input
-            type="date"
-            name="gun"
-            defaultValue={ymd}
-            className="rounded-xl border border-cream-dark bg-paper px-3 py-2"
-          />
-          <button className="rounded-full bg-sage px-4 py-2 text-white">Göster</button>
+          <Input type="date" name="gun" defaultValue={ymd} className="w-auto" />
+          <Button type="submit">Göster</Button>
         </form>
-      </div>
+      </AdminPageHeader>
 
-      <section className="rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
-        <h2 className="font-serif text-xl">Günün kayıtları</h2>
-        <ul className="mt-3 divide-y divide-cream-dark">
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-serif text-xl">Günün kayıtları</CardTitle>
+        </CardHeader>
+        <CardContent className="divide-y divide-border">
           {appointments.length === 0 && blocks.length === 0 ? (
-            <li className="py-3 text-ink-soft">Kayıt yok.</li>
+            <p className="text-sm text-muted-foreground">Kayıt yok.</p>
           ) : null}
           {appointments.map((item) => (
-            <li key={item.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
+            <div key={item.id} className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
               <div>
                 <p className="font-medium">
                   {formatTimeIstanbul(item.startAt)}–{formatTimeIstanbul(item.endAt)} · {item.patientName}
                 </p>
-                <p className="text-sm text-ink-soft">
-                  {item.service.name} · {item.phone} · {item.status}
+                <p className="text-sm text-muted-foreground">
+                  {item.service.name} · {item.phone} · <StatusBadge status={item.status} />
                 </p>
               </div>
-              {item.status !== "CANCELLED" ? (
-                <form
-                  action={async () => {
-                    "use server";
-                    await updateAppointmentStatus(item.id, "CANCELLED");
-                  }}
-                >
-                  <button className="text-sm text-red-800 underline">İptal</button>
-                </form>
-              ) : null}
-              {item.status === "CONFIRMED" ? (
-                <form
-                  action={async () => {
-                    "use server";
-                    await updateAppointmentStatus(item.id, "COMPLETED");
-                  }}
-                >
-                  <button className="text-sm text-sage-dark underline">Tamamlandı</button>
-                </form>
-              ) : null}
-            </li>
+              <div className="flex gap-2">
+                {item.status !== "CANCELLED" ? (
+                  <form
+                    action={async () => {
+                      "use server";
+                      await updateAppointmentStatus(item.id, "CANCELLED");
+                    }}
+                  >
+                    <Button type="submit" variant="destructive" size="sm">
+                      İptal
+                    </Button>
+                  </form>
+                ) : null}
+                {item.status === "CONFIRMED" ? (
+                  <form
+                    action={async () => {
+                      "use server";
+                      await updateAppointmentStatus(item.id, "COMPLETED");
+                    }}
+                  >
+                    <Button type="submit" variant="secondary" size="sm">
+                      Tamamlandı
+                    </Button>
+                  </form>
+                ) : null}
+              </div>
+            </div>
           ))}
           {blocks.map((item) => (
-            <li key={item.id} className="flex items-center justify-between py-3">
+            <div key={item.id} className="flex items-center justify-between py-3 last:pb-0">
               <p className="text-sm">
                 Blok {formatTimeIstanbul(item.startAt)}–{formatTimeIstanbul(item.endAt)} · {item.reason}
               </p>
@@ -99,40 +104,56 @@ export default async function AdminCalendarPage({
                   await deleteBlockedSlot(item.id);
                 }}
               >
-                <button className="text-sm underline">Kaldır</button>
+                <Button type="submit" variant="outline" size="sm">
+                  Kaldır
+                </Button>
               </form>
-            </li>
+            </div>
           ))}
-        </ul>
-      </section>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
-          <h2 className="font-serif text-xl">Manuel randevu</h2>
-          <ManualAppointmentForm
-            ymd={ymd}
-            services={services.map((service) => ({
-              id: service.id,
-              name: service.name,
-              durationMin: service.durationMin,
-            }))}
-          />
-        </section>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-serif text-xl">Manuel randevu</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ManualAppointmentForm
+              ymd={ymd}
+              services={services.map((service) => ({
+                id: service.id,
+                name: service.name,
+                durationMin: service.durationMin,
+              }))}
+            />
+          </CardContent>
+        </Card>
 
-        <section className="rounded-2xl bg-paper p-4 ring-1 ring-cream-dark">
-          <h2 className="font-serif text-xl">Saat bloğu</h2>
-          <p className="text-sm text-ink-soft">Öğle arası dışı tatil veya dolu aralık.</p>
-          <form action={createBlockedSlotForm} className="mt-3 grid gap-3">
-            <input type="hidden" name="ymd" value={ymd} />
-            <input type="time" name="startTime" required className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <input type="time" name="endTime" required className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <input name="reason" placeholder="Neden" className="rounded-xl border border-cream-dark bg-cream px-3 py-2" />
-            <button className="rounded-full border border-sage py-2 text-sage-dark">Bloğu kaydet</button>
-          </form>
-        </section>
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-serif text-xl">Saat bloğu</CardTitle>
+            <CardDescription>Öğle arası dışı tatil veya dolu aralık.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form action={createBlockedSlotForm} className="grid gap-3">
+              <input type="hidden" name="ymd" value={ymd} />
+              <Input type="time" name="startTime" required />
+              <Input type="time" name="endTime" required />
+              <Input name="reason" placeholder="Neden" />
+              <Button type="submit" variant="outline">
+                Bloğu kaydet
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
-      <p className="text-sm">
-        Erteleme için <Link href="/admin/randevular" className="underline">randevu listesini</Link> kullanın.
+      <p className="text-sm text-muted-foreground">
+        Erteleme için{" "}
+        <Button variant="link" asChild className="h-auto p-0">
+          <Link href="/admin/randevular">randevu listesini</Link>
+        </Button>{" "}
+        kullanın.
       </p>
     </div>
   );

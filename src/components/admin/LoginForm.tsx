@@ -2,39 +2,26 @@
 
 import { useActionState } from "react";
 import { loginAdmin, type LoginState } from "@/lib/actions/auth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState(loginAdmin, {} as LoginState);
   return (
     <form action={action} className="space-y-4">
-      <label className="block text-sm">
-        E-posta
-        <input
-          required
-          name="email"
-          type="email"
-          autoComplete="username"
-          className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
-        />
-      </label>
-      <label className="block text-sm">
-        Şifre
-        <input
-          required
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          className="mt-1 w-full rounded-md border border-champagne bg-ivory px-3 py-2"
-        />
-      </label>
-      {state?.error ? <p className="text-sm text-burgundy">{state.error}</p> : null}
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-md bg-burgundy py-3 text-ivory transition-colors hover:bg-champagne hover:text-espresso disabled:opacity-50"
-      >
+      <div className="space-y-2">
+        <Label htmlFor="email">E-posta</Label>
+        <Input id="email" required name="email" type="email" autoComplete="username" />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Şifre</Label>
+        <Input id="password" required name="password" type="password" autoComplete="current-password" />
+      </div>
+      {state?.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
+      <Button type="submit" disabled={pending} className="w-full" size="lg">
         {pending ? "Giriş…" : "Giriş yap"}
-      </button>
+      </Button>
     </form>
   );
 }
